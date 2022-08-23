@@ -37,12 +37,14 @@ public class Deck extends JPanel {
                 if(pile.empty()){
                     while(!visible.empty()){
                         Card c = visible.pop();
+                        c.setPos(1.2, 0.0);
                         c.moveTo(0.0, 0.0);
                         pile.push(c);
                     }
                 }
                 else {
                     Card c = pile.pop();
+                    c.setPos(0.0, 0.0);
                     c.moveTo(1.2, 0.0);
                     visible.push(c);
                 }
@@ -51,8 +53,8 @@ public class Deck extends JPanel {
     }
 
     private void addCards(){
-        cards.add(new Card("Generic Card", "Lorem ipsum dolor sit amet", 9));
-        cards.add(new Card("Generic Card II", "Lorem ipsum dolor sit amet el numero dos", 10));
+        cards.add(new Card("Generic Card", 9, "Lorem ipsum dolor sit amet"));
+        cards.add(new Card("Generic Card II", 10, "Lorem ipsum dolor sit amet el numero dos"));
     }
 
     @Override
