@@ -5,8 +5,8 @@ public class Painter {
     private double scale;
 
     public static int ALIGN_CENTER_H = 1;
-    public static int ALIGN_RIGHT = 4;
     public static int ALIGN_CENTER_V = 2;
+    public static int ALIGN_RIGHT = 4;
     public static int ALIGN_BOTTOM = 8;
 
     public Painter(Graphics g){
@@ -59,10 +59,10 @@ public class Painter {
     }
 
     private void _drawText(double x, double y, int flags, String text){
-        if((flags & ALIGN_CENTER_V) != 0) y += getFontSize() * .6;
-        else if((flags & ALIGN_BOTTOM) == 0) y += getFontSize() * 1.;
-        if((flags & ALIGN_CENTER_H) != 0) y -= getRenderedWidth(text) / 2;
-        else if((flags & ALIGN_RIGHT) != 0) y -= getRenderedWidth(text);
+        if((flags & ALIGN_CENTER_V) != 0) y += getFontSize() * .4;
+        else if((flags & ALIGN_BOTTOM) == 0) y += getFontSize();
+        if((flags & ALIGN_CENTER_H) != 0) x -= getRenderedWidth(text) / 2;
+        else if((flags & ALIGN_RIGHT) != 0) x -= getRenderedWidth(text);
         graphics.drawString(text, (int)(x * scale), (int)(y * scale));
     }
 
@@ -73,7 +73,15 @@ public class Painter {
     public void drawText(double x, double y, int flags, String ...text){
         double size = getFont().getSize() / scale;
         for(int i = 0; i < text.length; i++) {
-            _drawText(x, y + (i * 1.2 + 1) * size, flags, text[i]);
+            if((flags & ALIGN_BOTTOM) != 0) {
+                _drawText(x, y + (i - text.length + 1) * 1.2 * size, flags, text[i]);
+            }
+            else if((flags & ALIGN_CENTER_V) != 0) {
+                _drawText(x, y + (i - (text.length - 1) * .5) * 1.2 * size, flags, text[i]);
+            }
+            else{
+                _drawText(x, y + i * 1.2 * size, flags, text[i]);
+            }
         }
     }
 }

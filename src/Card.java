@@ -35,11 +35,14 @@ public class Card {
 
         p.drawCircle(x + .13, y + .13, .1);
 
-        p.setFont("Times New Roman", Font.PLAIN, 0.2);
-        p.drawText(x + .13, y + .13, Painter.ALIGN_CENTER_V | Painter.ALIGN_CENTER_H, Integer.toString(12));
+        p.setFont("Times New Roman", Font.PLAIN, 0.15);
+        p.drawText(x + .13, y + .13, Painter.ALIGN_CENTER_V | Painter.ALIGN_CENTER_H, Integer.toString(value));
 
         p.setFontSize(0.1);
         p.drawText(x + .28, y + .03, name);
+
+        p.setFontSize(0.07);
+        p.drawText(x + .5, y + 1.7, Painter.ALIGN_CENTER_V | Painter.ALIGN_CENTER_H, description);
 
         p.setColor(Color.BLACK);
         p.drawRect(x, y, 1, 2);

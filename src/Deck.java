@@ -53,8 +53,19 @@ public class Deck extends JPanel {
     }
 
     private void addCards(){
-        cards.add(new Card("Generic Card", 9, "Lorem ipsum dolor sit amet"));
-        cards.add(new Card("Generic Card II", 10, "Lorem ipsum dolor sit amet el numero dos"));
+        cards.add(new Card(
+                "Spy", 0,
+                "If you are the only",
+                "player that played or",
+                "discarded this card",
+                "during the round, "
+        ));
+        cards.add(new Card(
+        "Princess", 9,
+                "If you play or discard",
+                "this card, you are out",
+                "of the round."
+        ));
     }
 
     @Override
