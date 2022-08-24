@@ -14,6 +14,12 @@ public class Card {
         this.value = value;
     }
 
+    public Card(CardType cardType){
+        name = cardType.getName();
+        description = cardType.getDescription();
+        value = cardType.getValue();
+    }
+
     public void setPos(double x, double y){
         this.x = targetX = x;
         this.y = targetY = y;
@@ -58,5 +64,9 @@ public class Card {
     public void update(double dt){
         if(targetX != x) x = targetX + (x - targetX) * Math.pow(0.01, dt);
         if(targetY != y) y = targetY + (y - targetY) * Math.pow(0.01, dt);
+    }
+
+    public boolean equals(Object o){
+        return o instanceof Card && ((Card)o).name.equals(name) || o instanceof String && name.equals(o);
     }
 }
