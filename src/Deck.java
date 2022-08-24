@@ -55,16 +55,62 @@ public class Deck extends JPanel {
     private void addCards(){
         cards.add(new Card(
                 "Spy", 0,
-                "If you are the only",
-                "player that played or",
-                "discarded this card",
-                "during the round, "
+                "At the end of the round, if you",
+                "are the only player in the round",
+                "who played or discarded a spy,",
+                "gain 1 favor token."
+        ));
+        cards.add(new Card(
+                "Guard", 1,
+                "Choose a player and name a",
+                "non-guard card. If the player",
+                "has that card, they are out of",
+                "the round."
+        ));
+        cards.add(new Card(
+                "Priest", 2,
+                "Choose a player and look at",
+                "their hand."
+        ));
+        cards.add(new Card(
+                "Baron", 3,
+                "Choose a player and secretly",
+                "compare hands with them.",
+                "Whoever has the lower value",
+                "is out of the round."
+        ));
+        cards.add(new Card(
+                "Handmaid", 4,
+                "Until the next round, other",
+                "players cannot choose you",
+                "for their effects."
+        ));
+        cards.add(new Card(
+                "Prince", 5,
+                "Choose any player (including",
+                "yourself). That player discards",
+                "their hand and redraws."
+        ));
+        cards.add(new Card(
+                "Chancellor", 6,
+                "Draw 2 cards. Keep 1 card and",
+                "put your other 2 on the bottom",
+                "of the deck in any order."
+        ));
+        cards.add(new Card(
+                "King", 7,
+                "Choose another player and trade",
+                "hands with them."
+        ));
+        cards.add(new Card(
+                "King", 8,
+                "If the King or Prince is in your",
+                "hand, you must play this card."
         ));
         cards.add(new Card(
         "Princess", 9,
-                "If you play or discard",
-                "this card, you are out",
-                "of the round."
+                "If you play or discard this card,",
+                "you are out of the round."
         ));
     }
 
