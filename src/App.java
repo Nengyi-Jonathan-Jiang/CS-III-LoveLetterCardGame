@@ -1,5 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Iterator;
+
+import Graphics.Deck;
+import Graphics.GameCanvas;
+import Logic.Actions.MenuAction;
+import Logic.Game;
+import Scheduler.Action;
+import Scheduler.ActionScheduler;
 
 public class App extends JFrame {
     public App(){
@@ -9,7 +17,27 @@ public class App extends JFrame {
         setSize(new Dimension(1200, 800));
         setResizable(true);
 
-        add(new Deck());
+        GameCanvas canvas = new GameCanvas();
+        Game game = new Game();
+
+        add(canvas);
+
+        ActionScheduler.run(new Action() {
+            @Override
+            public Iterator<? extends Action> getPreActions() {
+                return new Iterator<Action>() {
+                    @Override
+                    public boolean hasNext() {
+                        return true;
+                    }
+
+                    @Override
+                    public Action next() {
+                        return new MenuAction(game);
+                    }
+                };
+            }
+        }, canvas);
 
         setVisible(true);
     }

@@ -1,3 +1,7 @@
+package Logic;
+
+import Card.Card;
+
 public class Player {
     private Card hand;
     private final String name;

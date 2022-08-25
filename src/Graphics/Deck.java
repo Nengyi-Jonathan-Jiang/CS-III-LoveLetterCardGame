@@ -1,3 +1,7 @@
+package Graphics;
+
+import Card.Card;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -5,9 +9,9 @@ import java.util.*;
 import java.util.List;
 
 public class Deck extends JPanel {
-    private List<Card> cards;
-    private Stack<Card> pile;
-    private Stack<Card> visible;
+    private final List<Card> cards;
+    private final Stack<Card> pile;
+    private final Stack<Card> visible;
 
     public Deck(){
         cards = new ArrayList<>();
@@ -15,7 +19,7 @@ public class Deck extends JPanel {
         addCards();
 
         pile = new Stack<>();
-        cards.forEach(c->pile.push(c));
+        cards.forEach(pile::push);
         visible = new Stack<>();
 
         new Thread(() -> {
@@ -103,7 +107,7 @@ public class Deck extends JPanel {
                 "hands with them."
         ));
         cards.add(new Card(
-                "King", 8,
+                "Countess", 8,
                 "If the King or Prince is in your",
                 "hand, you must play this card."
         ));

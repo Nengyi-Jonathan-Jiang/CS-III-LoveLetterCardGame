@@ -1,4 +1,7 @@
+package Card;
+
 import java.awt.*;
+import Graphics.Painter;
 
 public class Card {
     private final String name;
@@ -12,12 +15,6 @@ public class Card {
         this.name = name;
         this.description = description;
         this.value = value;
-    }
-
-    public Card(CardType cardType){
-        name = cardType.getName();
-        description = cardType.getDescription();
-        value = cardType.getValue();
     }
 
     public void setPos(double x, double y){
