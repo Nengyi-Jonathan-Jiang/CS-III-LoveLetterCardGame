@@ -11,6 +11,7 @@ public abstract class Action {
     public void processEvents(MouseEvent me, KeyEvent ke){}
     public void update(){}
     public void draw(GameCanvas canvas){}
+    public void onStart(){}
     public void onFinish(){}
     public boolean isFinished(){return true;}
 }

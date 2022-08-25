@@ -16,10 +16,10 @@ public class Painter {
     }
     public void useGraphics(Graphics g){graphics = (Graphics2D) g; }
 
-    public void setScale(double scale){this.scale = scale;}
+    public Painter setScale(double scale){this.scale = scale; return this;}
 
-    public void setColor(Color color){
-        graphics.setColor(color);
+    public Painter setColor(Color color){
+        graphics.setColor(color);  return this;
     }
 
     public void drawRect(double x, double y, double width, double height){
@@ -40,20 +40,20 @@ public class Painter {
 
 
     public Font getFont(){return graphics.getFont();}
-    public void setFont(String name, int style, double size){
-        setFont(new Font(name, style, (int)(scale * size)));
+    public Painter setFont(String name, int style, double size){
+        return setFont(new Font(name, style, (int)(scale * size)));
     }
-    private void setFont(Font f){graphics.setFont(f);}
+    private Painter setFont(Font f){graphics.setFont(f); return this;}
 
     public double getFontSize(){return graphics.getFont().getSize() / scale;}
     public String getFontName(){return graphics.getFont().getName();}
     public int getFontStyle(){return graphics.getFont().getStyle();}
 
-    public void setFontStyle(int style){
-        setFont(new Font(getFontName(), style, getFont().getSize()));
+    public Painter setFontStyle(int style){
+        setFont(new Font(getFontName(), style, getFont().getSize()));  return this;
     }
-    public void setFontSize(double size){
-        setFont(new Font(getFontName(), getFontStyle(), (int)(size * scale)));
+    public Painter setFontSize(double size){
+        setFont(new Font(getFontName(), getFontStyle(), (int)(size * scale))); return this;
     }
 
     public double getRenderedWidth(String text){
