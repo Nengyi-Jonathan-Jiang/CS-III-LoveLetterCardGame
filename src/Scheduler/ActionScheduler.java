@@ -86,8 +86,8 @@ public class ActionScheduler {
                 else{
                     executeAction(currentAction);
 
-//                    try{Thread.sleep(delay);}
-//                    catch(Exception e){/*Nothing*/}
+                    try{Thread.sleep(delay);}
+                    catch(Exception e){/*Nothing*/}
                 }
             }
         }).start();
@@ -96,6 +96,8 @@ public class ActionScheduler {
     private void scheduleAction(Action a){
 
         actionStack.push(a);
+
+        a.onStart();
 
         Iterator<? extends Action> subActions = a.getPreActions();
         if(subActions != null && subActions.hasNext()){   //This action is not a leaf action

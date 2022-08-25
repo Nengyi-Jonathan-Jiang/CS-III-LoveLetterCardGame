@@ -16,8 +16,15 @@ public class PlayerSelectionAction extends Action {
     private boolean finished = false;
     private boolean interrupted = false;
 
+    private final ActionButton addPlayerButton;
+
+    private boolean typing = false;
+
     public PlayerSelectionAction(Game game){
         this.game = game;
+        addPlayerButton = new ActionButton("+ Add Player");
+        addPlayerButton.setSize(180, 40);
+        addPlayerButton.setFontSize(30);
     }
 
     @Override
@@ -31,7 +38,9 @@ public class PlayerSelectionAction extends Action {
             finished = interrupted = true;
         }
         else if(me != null){
-            finished = true;
+            if(addPlayerButton.clicked(me)){
+                finished = true;
+            }
         }
     }
 
@@ -40,6 +49,10 @@ public class PlayerSelectionAction extends Action {
         Painter p = new Painter(canvas.graphics);
         p.setFont("Times New Roman", Font.BOLD, 50);
         p.drawText(canvas.width * .5, canvas.height * .5, Painter.ALIGN_CENTER_H | Painter.ALIGN_CENTER_V, "Player Selection Action");
+
+        addPlayerButton.setPos(canvas.width - 200, 20);
+
+        addPlayerButton.draw(canvas);
     }
 
     @Override
