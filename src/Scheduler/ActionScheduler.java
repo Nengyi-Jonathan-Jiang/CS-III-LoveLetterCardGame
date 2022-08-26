@@ -33,16 +33,17 @@ public class ActionScheduler {
         this.delay = delay;
 
         this.canvas = canvas;
+
         canvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 lastMouseEvent[0] = e;
             }
         });
-        canvas.addKeyListener(new KeyAdapter() {
+        ((JFrame) SwingUtilities.getWindowAncestor(canvas)).addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                lastKeyEvent[0] = e;
+            lastKeyEvent[0] = e;
             }
         });
 

@@ -1,4 +1,4 @@
-package Logic.Actions;
+package Graphics.UI;
 
 import Graphics.GameCanvas;
 import Graphics.Painter;
@@ -31,6 +31,7 @@ public class ActionButton {
     public void setText(String... text){
         this.text = text;
     }
+    public String[] getText(){return text;}
 
     public void draw(GameCanvas canvas){
         canvas.graphics.drawRect(x, y, width, height);
