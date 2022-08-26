@@ -1,7 +1,5 @@
 package Logic;
 
-import Graphics.Deck;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -10,7 +8,6 @@ public class Game {
     private int numPlayers;
     private int currentPlayer;
     private List<String> cardTypes;
-    private Deck deck;
 
     private List<String> turnLog = new ArrayList<>();
 

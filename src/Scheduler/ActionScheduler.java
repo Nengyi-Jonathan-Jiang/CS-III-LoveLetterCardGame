@@ -40,6 +40,7 @@ public class ActionScheduler {
                 lastMouseEvent[0] = e;
             }
         });
+
         ((JFrame) SwingUtilities.getWindowAncestor(canvas)).addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {

@@ -5,20 +5,21 @@ import Graphics.GameCanvas;
 import Graphics.Painter;
 
 import java.awt.*;
+import java.util.List;
 
 public class Player {
 //    private Card[] hand;
-    private Card[] hand = {
+    private final List<Card> hand = List.of(
         GameCardTypes.Handmaid.makeCard(),
         GameCardTypes.Spy.makeCard(),
         GameCardTypes.Handmaid.makeCard()
-    };
+    );
     private Card active = GameCardTypes.Handmaid.makeCard();
-    private Card[] discard = {
+    private final List<Card> discard = List.of(
             GameCardTypes.King.makeCard(),
             GameCardTypes.Prince.makeCard(),
             GameCardTypes.Countess.makeCard()
-    };;
+    );
 
     private final String name;
 
@@ -44,8 +45,8 @@ public class Player {
 
         // Draw hand
         int cardScale = h / 2 - 20;
-        for(int i = 0; i < hand.length; i++){
-            hand[i].draw(canvas.graphics, 20 + i * (cardScale + 10), offset + 20, cardScale);
+        for(int i = 0; i < hand.size(); i++){
+            hand.get(i).draw(canvas.graphics, 20 + i * (cardScale + 10), offset + 20, cardScale);
         }
     }
 
@@ -60,10 +61,10 @@ public class Player {
         int cardScale = (int)(h / .8 - 10);
 
         p.setFont("Times New Roman", Font.BOLD, h / 3. - 10);
-        p.drawText(canvas.width - 5 - h * 4 / 3 - (discard.length) * (cardScale + 5), offset + h / 3., Painter.ALIGN_CENTER_V, "Discarded: ");
+        p.drawText(canvas.width - 5 - h * 4 / 3 - (discard.size()) * (cardScale + 5), offset + h / 3., Painter.ALIGN_CENTER_V, "Discarded: ");
 
-        for(int i = 0; i < discard.length; i++){
-            discard[i].draw(canvas.graphics, canvas.width - 5 - (i + 1) * (cardScale + 5), offset + 5, cardScale);
+        for(int i = 0; i < discard.size(); i++){
+            discard.get(i).draw(canvas.graphics, canvas.width - 5 - (i + 1) * (cardScale + 5), offset + 5, cardScale);
         }
     }
 }

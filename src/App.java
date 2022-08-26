@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Iterator;
 
-import Graphics.Deck;
 import Graphics.GameCanvas;
 import Logic.Actions.MenuAction;
 import Logic.Game;
