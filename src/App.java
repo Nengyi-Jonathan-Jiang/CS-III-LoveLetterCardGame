@@ -15,7 +15,7 @@ public class App extends JFrame {
         setTitle("L Letter Cards");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(new Dimension(1600, 1000));
-        setResizable(false);
+//        setResizable(false);
 
         GameCanvas canvas = new GameCanvas();
         Game game = new Game();

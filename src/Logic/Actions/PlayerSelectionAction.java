@@ -84,29 +84,7 @@ public class PlayerSelectionAction extends Action {
             }
         }
         else if(me != null){
-            if(backButton.clicked(me)){
-                finished = interrupted = true;
-            }
-            else if(nextButton.clicked(me)){
-                if(players.size() >= 3) {
-                    game.initializePlayers(players.stream().map(btn -> btn.getText()[0]).collect(Collectors.toList()));
-                    finished = true;
-                }
-            }
-            else if(addPlayerButton.clicked(me)){
-                typing = false;
-                if(players.size() < 6) {
-                    if(selectedPlayer >= 0){
-                        players.get(selectedPlayer).deleteChar();
-                    }
-                    selectedPlayer = players.size();
-                    TextButton btn = new TextButton("Player" + (players.size() + 1) + "_");
-                    btn.setFontSize(20);
-                    players.add(btn);
-                    typing = true;
-                }
-            }
-            else{
+            {
                 boolean esc = true;
                 for(int i = 0; i < players.size(); i++){
                     TextButton btn = players.get(i);
@@ -127,6 +105,29 @@ public class PlayerSelectionAction extends Action {
                         selectedPlayer = -1;
                         typing = false;
                     }
+                }
+            }
+
+            if(backButton.clicked(me)){
+                finished = interrupted = true;
+            }
+            else if(nextButton.clicked(me)){
+                if(players.size() >= 3) {
+                    game.initializePlayers(players.stream().map(btn -> btn.getText()[0]).collect(Collectors.toList()));
+                    finished = true;
+                }
+            }
+            else if(addPlayerButton.clicked(me)){
+                typing = false;
+                if(players.size() < 6) {
+                    if(selectedPlayer >= 0){
+                        players.get(selectedPlayer).deleteChar();
+                    }
+                    selectedPlayer = players.size();
+                    TextButton btn = new TextButton("Player" + (players.size() + 1) + "_");
+                    btn.setFontSize(20);
+                    players.add(btn);
+                    typing = true;
                 }
             }
         }

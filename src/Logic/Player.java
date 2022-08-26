@@ -2,6 +2,9 @@ package Logic;
 
 import Card.Card;
 import Graphics.GameCanvas;
+import Graphics.Painter;
+
+import java.awt.*;
 
 public class Player {
 //    private Card[] hand;
@@ -48,6 +51,19 @@ public class Player {
 
     public void drawAsOther(GameCanvas canvas, int position){
         int offset = position * canvas.height / 9;
+        int h = canvas.height / 9;
         canvas.graphics.drawRect(0, offset, canvas.width, canvas.height / 9);
+        Painter p = new Painter(canvas.graphics);
+        p.setFont("Times New Roman", Font.BOLD, h / 3. - 10);
+        p.drawText(20, offset + h / 3., Painter.ALIGN_CENTER_V, name);
+
+        int cardScale = (int)(h / .8 - 10);
+
+        p.setFont("Times New Roman", Font.BOLD, h / 3. - 10);
+        p.drawText(canvas.width - 5 - h * 4 / 3 - (discard.length) * (cardScale + 5), offset + h / 3., Painter.ALIGN_CENTER_V, "Discarded: ");
+
+        for(int i = 0; i < discard.length; i++){
+            discard[i].draw(canvas.graphics, canvas.width - 5 - (i + 1) * (cardScale + 5), offset + 5, cardScale);
+        }
     }
 }
