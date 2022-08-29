@@ -17,15 +17,16 @@ public class DrawAction extends Action {
 
     @Override
     public void draw(GameCanvas canvas) {
-        Player currentPlayer = game.getCurrentPlayer();
-
-        currentPlayer.drawAsMain(canvas);
 
         List<Player> players = game.getPlayers();
 
-        for(int i = 0; i < players.size(); i++){
-            players.get(i).drawAsOther(canvas, i);
-        }
+        for(int i = 0; i < players.size(); i++)
+            if(i != game.getCurrentPosition())
+                players.get(i).drawAsOther(canvas, i, game.getNumPlayers());
+            else
+                players.get(i).drawAsMain(canvas, i, game.getNumPlayers());
+
+
     }
 
     @Override

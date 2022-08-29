@@ -22,12 +22,11 @@ public class Player {
     );
 
     private final String name;
+    private final Game game;
 
     private boolean out = false;
 
-    public Player(String name){
-        this.name = name;
-    }
+    public Player(String name, Game game){ this.name = name; this.game = game; }
 
     public String getName(){return name;}
 
@@ -38,33 +37,50 @@ public class Player {
     public boolean isOut(){return out;}
     public void eliminate(){out = true;}
 
-    public void drawAsMain(GameCanvas canvas){
-        int offset = canvas.height * 1 / 2;
-        int h = canvas.height - offset;
-        canvas.graphics.drawRect(0, offset, canvas.width, h);
+    public void drawAsMain(GameCanvas canvas, int position, int totalPlayers){
+        int playersPerCol = ((totalPlayers + 1) / 2);
+        double cardOffset = .25;
 
-        // Draw hand
-        int cardScale = h - 40;
-        for(int i = 0; i < hand.size(); i++){
-            hand.get(i).draw(canvas.graphics, 20 + i * (cardScale + 10), offset + 20, cardScale);
-        }
-    }
+        int h = canvas.height / playersPerCol;
+        int cardHeight = (int)((h - 60) / (1 + (Math.ceil(1. * game.numcards / totalPlayers) - 1) * cardOffset));
+        int cardWidth = cardHeight * 5 / 7;
+        int w = cardWidth + 40;
+        int offsetX = position < 3 ? 0 : canvas.width - w;
+        int offsetY = h * (position % playersPerCol);
 
-    public void drawAsOther(GameCanvas canvas, int position){
-        int offset = position * canvas.height / 9;
-        int h = canvas.height / 9;
-        canvas.graphics.drawRect(0, offset, canvas.width, canvas.height / 9);
-        Painter p = new Painter(canvas.graphics);
-        p.setFont("Times New Roman", Font.BOLD, h / 3. - 10);
-        p.drawText(20, offset + h / 3., Painter.ALIGN_CENTER_V, name);
 
-        int cardScale = (int)(h / .8 - 10);
+        canvas.graphics.drawRect(offsetX, offsetY, w, h);
 
-        p.setFont("Times New Roman", Font.BOLD, h / 3. - 10);
-        p.drawText(canvas.width - 5 - h * 4 / 3 - (discard.size()) * (cardScale + 5), offset + h / 3., Painter.ALIGN_CENTER_V, "Discarded: ");
+        new Painter(canvas.graphics)
+                .setFont("Times New Roman", Font.BOLD, 20)
+                .drawText(offsetX + w * .5, offsetY, Painter.ALIGN_CENTER_H, name + "");
 
         for(int i = 0; i < discard.size(); i++){
-            discard.get(i).draw(canvas.graphics, canvas.width - 5 - (i + 1) * (cardScale + 5), offset + 5, cardScale);
+            discard.get(i).draw(canvas.graphics, offsetX + 20, offsetY + 40 + (int)(cardHeight * cardOffset * i), cardWidth);
+        }
+
+    }
+
+    public void drawAsOther(GameCanvas canvas, int position, int totalPlayers){
+        int playersPerCol = ((totalPlayers + 1) / 2);
+        double cardOffset = .25;
+
+        int h = canvas.height / playersPerCol;
+        int cardHeight = (int)((h - 60) / (1 + (Math.ceil(1. * game.numcards / totalPlayers) - 1) * cardOffset));
+        int cardWidth = cardHeight * 5 / 7;
+        int w = cardWidth + 40;
+        int offsetX = position < playersPerCol ? 0 : canvas.width - w;
+        int offsetY = h * (position % playersPerCol);
+
+
+        canvas.graphics.drawRect(offsetX, offsetY, w, h);
+
+        new Painter(canvas.graphics)
+                .setFont("Times New Roman", Font.PLAIN, 20)
+                .drawText(offsetX + w * .5, offsetY, Painter.ALIGN_CENTER_H, name);
+
+        for(int i = 0; i < discard.size(); i++){
+            discard.get(i).draw(canvas.graphics, offsetX + 20, offsetY + 40 + (int)(cardHeight * cardOffset * i), cardWidth);
         }
     }
 }

@@ -9,6 +9,8 @@ public class Game {
     private int currentPlayer;
     private List<String> cardTypes;
 
+    public final int numcards = 21;
+
     private List<String> turnLog = new ArrayList<>();
 
     private enum States {
@@ -24,7 +26,7 @@ public class Game {
     public void initializePlayers(List<String> playerNames){
         if(currState != States.INITIAL) throw new Error("Hey that shouldn't happen here oops lmao");
 
-        players = playerNames.stream().map(Player::new).collect(Collectors.toList());
+        players = playerNames.stream().map(i->new Player(i, this)).collect(Collectors.toList());
         numPlayers = players.size();
         currentPlayer = 0;
 
@@ -43,10 +45,18 @@ public class Game {
                 .collect(Collectors.toList());
     }
 
+    public int getCurrentPosition(){
+        return currentPlayer;
+    }
+
     public void nextPlayer(){
         do {
             currentPlayer++;
             currentPlayer %= numPlayers;
         } while(getCurrentPlayer().isOut());
+    }
+
+    public int getNumPlayers(){
+        return numPlayers;
     }
 }
