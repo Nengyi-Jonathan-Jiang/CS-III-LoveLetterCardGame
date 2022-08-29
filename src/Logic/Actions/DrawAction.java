@@ -9,6 +9,8 @@ import java.util.List;
 public class DrawAction extends Action {
     private final Game game;
 
+    private double time = 0;
+
     public DrawAction(Game game){
         this.game = game;
     }
@@ -19,15 +21,18 @@ public class DrawAction extends Action {
 
         currentPlayer.drawAsMain(canvas);
 
-        List<Player> otherPlayers = game.getOtherPlayers();
+        List<Player> players = game.getPlayers();
 
-        for(int i = 0; i < otherPlayers.size(); i++){
-            otherPlayers.get(i).drawAsOther(canvas, i);
+        for(int i = 0; i < players.size(); i++){
+            players.get(i).drawAsOther(canvas, i);
         }
     }
 
     @Override
-    public boolean isFinished() {
-        return false;
+    public void update() {
+        time += 0.00008;
     }
+
+    @Override
+    public boolean isFinished() { return time > 1; }
 }

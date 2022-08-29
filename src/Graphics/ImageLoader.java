@@ -25,4 +25,16 @@ public final class ImageLoader {
             e.printStackTrace();
         }
     }
+    public static BufferedImage load(String filename){
+        try (InputStream inputStream = ImageLoader.class.getResourceAsStream(filename)) {
+            if(inputStream != null) {
+                return ImageIO.read(inputStream);
+            }
+        }
+        catch(Exception e){
+            System.out.println("Could not load file \"" + filename + "\"");
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

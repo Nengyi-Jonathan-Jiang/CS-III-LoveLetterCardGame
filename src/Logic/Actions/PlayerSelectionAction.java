@@ -2,8 +2,8 @@ package Logic.Actions;
 
 import Graphics.GameCanvas;
 import Graphics.Painter;
-import Graphics.UI.ActionButton;
 import Graphics.UI.TextButton;
+import Graphics.UI.InputButton;
 import Logic.Game;
 import Scheduler.Action;
 
@@ -22,25 +22,25 @@ public class PlayerSelectionAction extends Action {
     private boolean finished = false;
     private boolean interrupted = false;
 
-    private final ActionButton addPlayerButton;
-    private final ActionButton nextButton;
-    private final ActionButton backButton;
-    private final List<TextButton> players;
+    private final TextButton addPlayerButton;
+    private final TextButton nextButton;
+    private final TextButton backButton;
+    private final List<InputButton> players;
 
     private boolean typing = false;
     private int selectedPlayer =  -1;
 
     public PlayerSelectionAction(Game game){
         this.game = game;
-        addPlayerButton = new ActionButton("+ Add Player");
+        addPlayerButton = new TextButton("+ Add Player");
         addPlayerButton.setSize(150, 30);
         addPlayerButton.setFontSize(20);
 
-        nextButton = new ActionButton("Start Game");
+        nextButton = new TextButton("Start Game");
         nextButton.setSize(150, 30);
         nextButton.setFontSize(20);
 
-        backButton = new ActionButton("Back to Menu");
+        backButton = new TextButton("Back to Menu");
         backButton.setSize(150, 30);
         backButton.setFontSize(20);
 
@@ -65,7 +65,7 @@ public class PlayerSelectionAction extends Action {
             else if(typing){
                 char c = ke.getKeyChar();
                 if(selectedPlayer < 0) return;
-                TextButton btn = players.get(selectedPlayer);
+                InputButton btn = players.get(selectedPlayer);
 
                 if(("" + c).matches("^[a-zA-Z0-9_]$")){
                     btn.deleteChar();
@@ -87,7 +87,7 @@ public class PlayerSelectionAction extends Action {
             {
                 boolean esc = true;
                 for(int i = 0; i < players.size(); i++){
-                    TextButton btn = players.get(i);
+                    InputButton btn = players.get(i);
                     if(btn.clicked(me)){
                         if(selectedPlayer >= 0){
                             players.get(selectedPlayer).deleteChar();
@@ -124,7 +124,7 @@ public class PlayerSelectionAction extends Action {
                         players.get(selectedPlayer).deleteChar();
                     }
                     selectedPlayer = players.size();
-                    TextButton btn = new TextButton("Player" + (players.size() + 1) + "_");
+                    InputButton btn = new InputButton("Player" + (players.size() + 1) + "_");
                     btn.setFontSize(20);
                     players.add(btn);
                     typing = true;
@@ -154,7 +154,7 @@ public class PlayerSelectionAction extends Action {
         backButton.draw(canvas);
 
         for(int i = 0; i < players.size(); i++){
-            ActionButton btn = players.get(i);
+            TextButton btn = players.get(i);
 
             btn.setSize(canvas.width - 40, 30);
 

@@ -39,12 +39,12 @@ public class Player {
     public void eliminate(){out = true;}
 
     public void drawAsMain(GameCanvas canvas){
-        int offset = canvas.height * 5 / 9;
+        int offset = canvas.height * 1 / 2;
         int h = canvas.height - offset;
         canvas.graphics.drawRect(0, offset, canvas.width, h);
 
         // Draw hand
-        int cardScale = h / 2 - 20;
+        int cardScale = h - 40;
         for(int i = 0; i < hand.size(); i++){
             hand.get(i).draw(canvas.graphics, 20 + i * (cardScale + 10), offset + 20, cardScale);
         }

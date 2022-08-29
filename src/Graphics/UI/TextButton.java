@@ -1,20 +1,33 @@
 package Graphics.UI;
 
-public class TextButton extends ActionButton {
-    public TextButton(String str){
-        super(str);
+import Graphics.GameCanvas;
+import Graphics.Painter;
+import org.jetbrains.annotations.NotNull;
+
+import java.awt.*;
+
+public class TextButton extends Button{
+    private String[] text;
+    private int fontSize = -1;
+
+    public TextButton(String... text){
+        this.text = text;
     }
 
-    public void append(char c){
-        append(c + "");
+    public void setFontSize(int size){
+        fontSize = size;
     }
-    public void append(String s){
-        String text = getText()[0];
-        setText(text + s);
+
+    public void setText(String... text){
+        this.text = text;
     }
-    public void deleteChar(){
-        String text = getText()[0];
-        if(text.length() > 0)
-            setText(text.substring(0, text.length() - 1));
+    public String[] getText(){return text;}
+
+    public void draw(@NotNull GameCanvas canvas){
+        canvas.graphics.drawRect(x, y, width, height);
+        new Painter(canvas.graphics)
+                .setFont("Times New Roman", Font.PLAIN, fontSize == -1 ? height : fontSize)
+                .drawText(x + width * .5, y + height * .5, Painter.ALIGN_CENTER_H | Painter.ALIGN_CENTER_V, text);
+
     }
 }

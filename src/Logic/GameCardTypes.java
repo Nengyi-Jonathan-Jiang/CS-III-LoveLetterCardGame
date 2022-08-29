@@ -4,7 +4,7 @@ import Card.CardType;
 import Scheduler.Action;
 
 public class GameCardTypes {
-    public static CardType Spy = new CardType() {
+    public static final CardType Spy = new CardType() {
         @Override
         public Action getAction() {
             return null;
@@ -22,7 +22,7 @@ public class GameCardTypes {
     };
 
 
-    public static CardType Guard = new CardType() {
+    public static final CardType Guard = new CardType() {
         @Override
         public Action getAction() {
             return null;
@@ -40,7 +40,7 @@ public class GameCardTypes {
     };
 
 
-    public static CardType Priest = new CardType() {
+    public static final CardType Priest = new CardType() {
         @Override
         public Action getAction() {
             return null;
@@ -55,7 +55,7 @@ public class GameCardTypes {
         }; }
     };
 
-    public static CardType Baron = new CardType() {
+    public static final CardType Baron = new CardType() {
         @Override
         public Action getAction() {
             return null;
@@ -72,7 +72,7 @@ public class GameCardTypes {
         }; }
     };
 
-    public static CardType Handmaid = new CardType() {
+    public static final CardType Handmaid = new CardType() {
         @Override
         public Action getAction() {
             return null;
@@ -88,7 +88,7 @@ public class GameCardTypes {
         }; }
     };
 
-    public static CardType Prince = new CardType() {
+    public static final CardType Prince = new CardType() {
         @Override
         public Action getAction() {
             return null;
@@ -104,7 +104,7 @@ public class GameCardTypes {
         }; }
     };
 
-    public static CardType Chancellor = new CardType() {
+    public static final CardType Chancellor = new CardType() {
         @Override
         public Action getAction() {
             return null;
@@ -120,7 +120,7 @@ public class GameCardTypes {
         }; }
     };
 
-    public static CardType King = new CardType() {
+    public static final CardType King = new CardType() {
         @Override
         public Action getAction() {
             return null;
@@ -135,7 +135,7 @@ public class GameCardTypes {
         }; }
     };
 
-    public static CardType Countess = new CardType() {
+    public static final CardType Countess = new CardType() {
         @Override
         public Action getAction() {
             return null;
@@ -151,7 +151,7 @@ public class GameCardTypes {
     };
 
 
-    public static CardType Princess = new CardType() {
+    public static final CardType Princess = new CardType() {
         @Override
         public Action getAction() {
             return null;
