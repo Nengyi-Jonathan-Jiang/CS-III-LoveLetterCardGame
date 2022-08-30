@@ -11,8 +11,8 @@ public class Player {
 //    private Card[] hand;
     private final List<Card> hand = List.of(
         GameCardTypes.Handmaid.makeCard(),
-        GameCardTypes.Spy.makeCard(),
-        GameCardTypes.Handmaid.makeCard()
+        GameCardTypes.Princess.makeCard(),
+        GameCardTypes.Baron.makeCard()
     );
     private Card active = GameCardTypes.Handmaid.makeCard();
     private final List<Card> discard = List.of(
@@ -38,30 +38,32 @@ public class Player {
     public void eliminate(){out = true;}
 
     public void drawAsMain(GameCanvas canvas, int position, int totalPlayers){
-        int playersPerCol = ((totalPlayers + 1) / 2);
+        drawSide(canvas, position, totalPlayers, new Font("Times New Roman", Font.BOLD, 20), name + "(You)");
+
         double cardOffset = .25;
+        int m = (int)((canvas.height / ((totalPlayers + 1) / 2) - 60) / (1 + (Math.ceil(1. * game.numcards / totalPlayers) - 1) * cardOffset) * 5 / 7 + 40);
 
-        int h = canvas.height / playersPerCol;
-        int cardHeight = (int)((h - 60) / (1 + (Math.ceil(1. * game.numcards / totalPlayers) - 1) * cardOffset));
-        int cardWidth = cardHeight * 5 / 7;
-        int w = cardWidth + 40;
-        int offsetX = position < 3 ? 0 : canvas.width - w;
-        int offsetY = h * (position % playersPerCol);
+        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 40).drawText(
+            canvas.width * .5, 30, Painter.ALIGN_CENTER_H, name + "'s turn."
+        );
 
+        int width = (canvas.width - 2 * m);
+        int cardWidth = Math.min(200, width / 3 - 20);
 
-        canvas.graphics.drawRect(offsetX, offsetY, w, h);
-
-        new Painter(canvas.graphics)
-                .setFont("Times New Roman", Font.BOLD, 20)
-                .drawText(offsetX + w * .5, offsetY, Painter.ALIGN_CENTER_H, name + "");
-
-        for(int i = 0; i < discard.size(); i++){
-            discard.get(i).draw(canvas.graphics, offsetX + 20, offsetY + 40 + (int)(cardHeight * cardOffset * i), cardWidth);
+        for(int i = 0; i < hand.size(); i++){
+            hand.get(i).draw(canvas.graphics, canvas.width / 2 - cardWidth / 2 +
+                (int)((width / 3) * (i - (hand.size() - 1) * .5)),
+                100,
+                cardWidth
+            );
         }
-
     }
 
     public void drawAsOther(GameCanvas canvas, int position, int totalPlayers){
+        drawSide(canvas, position, totalPlayers, new Font("Times New Roman", Font.PLAIN, 20), name);
+    }
+
+    public void drawSide(GameCanvas canvas, int position, int totalPlayers, Font font, String name){
         int playersPerCol = ((totalPlayers + 1) / 2);
         double cardOffset = .25;
 
@@ -76,7 +78,7 @@ public class Player {
         canvas.graphics.drawRect(offsetX, offsetY, w, h);
 
         new Painter(canvas.graphics)
-                .setFont("Times New Roman", Font.PLAIN, 20)
+                .setFont(font)
                 .drawText(offsetX + w * .5, offsetY, Painter.ALIGN_CENTER_H, name);
 
         for(int i = 0; i < discard.size(); i++){

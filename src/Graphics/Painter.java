@@ -43,7 +43,7 @@ public class Painter {
     public Painter setFont(String name, int style, double size){
         return setFont(new Font(name, style, (int)(scale * size)));
     }
-    private Painter setFont(Font f){graphics.setFont(f); return this;}
+    public Painter setFont(Font f){graphics.setFont(f); return this;}
 
     public double getFontSize(){return graphics.getFont().getSize() / scale;}
     public String getFontName(){return graphics.getFont().getName();}
