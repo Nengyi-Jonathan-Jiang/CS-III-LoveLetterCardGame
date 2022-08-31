@@ -12,8 +12,14 @@ public class TurnAction extends Action {
     @Override
     public Iterator<? extends Action> getPreActions() {
         return List.of(
-            new DrawAction(game)
+            new DrawAction(game),
+            new PlayAction(game)
         ).iterator();
+    }
+
+    @Override
+    public void onFinish() {
+        game.nextPlayer();
     }
 
     public TurnAction(Game game){

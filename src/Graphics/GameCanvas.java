@@ -1,5 +1,7 @@
 package Graphics;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.function.Consumer;

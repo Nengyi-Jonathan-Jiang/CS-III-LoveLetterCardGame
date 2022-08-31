@@ -24,7 +24,7 @@ public class App extends JFrame {
         ActionScheduler.run(new Action() {
             @Override
             public Iterator<? extends Action> getPreActions() {
-                return new Iterator<Action>() {
+                return new Iterator<>() {
                     @Override
                     public boolean hasNext() {
                         return true;

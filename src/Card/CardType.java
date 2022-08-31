@@ -9,7 +9,9 @@ public abstract class CardType {
         System.out.println("Loaded: " + "Card_" + getName() + ".png");
     }
 
-    public abstract Action getAction();
+    public Action getAction(){
+        return new Action(){};
+    }
 
     protected abstract String getName();
     protected abstract int getValue();

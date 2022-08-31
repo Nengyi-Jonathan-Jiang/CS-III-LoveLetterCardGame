@@ -1,18 +1,25 @@
 package Card;
 
-import java.awt.*;
-import Graphics.Painter;
-import Graphics.ImageLoader;
+import Graphics.UI.ImageButton;
+import Graphics.GameCanvas;
+import Scheduler.Action;
 
-public class Card {
+public class Card extends ImageButton {
     private final CardType cardType;
 
     public Card(CardType cardType){
+        super(cardType.getName());
         this.cardType = cardType;
     }
 
-    public void draw(Graphics2D g, int x, int y, int scale){
-        g.drawImage(ImageLoader.get(cardType.getName()), x, y, scale, scale * 7 / 5, null);
+    public Action getAction(){
+        return cardType.getAction();
+    }
+
+    public void draw(GameCanvas canvas, int x, int y, int scale){
+        setPos(x, y);
+        setSize(scale, scale * 7 / 5);
+        super.draw(canvas);
     }
 
     public boolean equals(Object o){

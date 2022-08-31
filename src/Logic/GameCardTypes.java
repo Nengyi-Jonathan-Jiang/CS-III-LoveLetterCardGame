@@ -5,10 +5,6 @@ import Scheduler.Action;
 
 public class GameCardTypes {
     public static final CardType Spy = new CardType() {
-        @Override
-        public Action getAction() {
-            return null;
-        }
 
         @Override protected String getName() { return "Spy"; }
         @Override protected int getValue() { return 0; }
@@ -23,10 +19,6 @@ public class GameCardTypes {
 
 
     public static final CardType Guard = new CardType() {
-        @Override
-        public Action getAction() {
-            return null;
-        }
 
         @Override protected String getName() { return "Guard"; }
         @Override protected int getValue() { return 1; }
@@ -41,10 +33,6 @@ public class GameCardTypes {
 
 
     public static final CardType Priest = new CardType() {
-        @Override
-        public Action getAction() {
-            return null;
-        }
 
         @Override protected String getName() { return "Priest"; }
         @Override protected int getValue() { return 2; }
@@ -56,10 +44,6 @@ public class GameCardTypes {
     };
 
     public static final CardType Baron = new CardType() {
-        @Override
-        public Action getAction() {
-            return null;
-        }
 
         @Override protected String getName() { return "Priest"; }
         @Override protected int getValue() { return 3; }
@@ -73,10 +57,6 @@ public class GameCardTypes {
     };
 
     public static final CardType Handmaid = new CardType() {
-        @Override
-        public Action getAction() {
-            return null;
-        }
 
         @Override protected String getName() { return "Handmaid"; }
         @Override protected int getValue() { return 4; }
@@ -89,10 +69,6 @@ public class GameCardTypes {
     };
 
     public static final CardType Prince = new CardType() {
-        @Override
-        public Action getAction() {
-            return null;
-        }
 
         @Override protected String getName() { return "Prince"; }
         @Override protected int getValue() { return 5; }
@@ -105,10 +81,6 @@ public class GameCardTypes {
     };
 
     public static final CardType Chancellor = new CardType() {
-        @Override
-        public Action getAction() {
-            return null;
-        }
 
         @Override protected String getName() { return "Chancellor"; }
         @Override protected int getValue() { return 6; }
@@ -121,10 +93,6 @@ public class GameCardTypes {
     };
 
     public static final CardType King = new CardType() {
-        @Override
-        public Action getAction() {
-            return null;
-        }
 
         @Override protected String getName() { return "King"; }
         @Override protected int getValue() { return 7; }
@@ -136,10 +104,6 @@ public class GameCardTypes {
     };
 
     public static final CardType Countess = new CardType() {
-        @Override
-        public Action getAction() {
-            return null;
-        }
 
         @Override protected String getName() { return "Countess"; }
         @Override protected int getValue() { return 8; }
@@ -152,10 +116,6 @@ public class GameCardTypes {
 
 
     public static final CardType Princess = new CardType() {
-        @Override
-        public Action getAction() {
-            return null;
-        }
 
         @Override protected String getName() { return "Princess"; }
         @Override protected int getValue() { return 9; }

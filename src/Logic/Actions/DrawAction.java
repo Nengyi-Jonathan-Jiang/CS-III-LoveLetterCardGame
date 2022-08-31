@@ -4,6 +4,8 @@ import Graphics.GameCanvas;
 import Logic.*;
 import Scheduler.Action;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class DrawAction extends Action {
@@ -25,13 +27,21 @@ public class DrawAction extends Action {
                 players.get(i).drawAsOther(canvas, i, game.getNumPlayers());
             else
                 players.get(i).drawAsMain(canvas, i, game.getNumPlayers());
+    }
 
-
+    @Override
+    public void onStart() {
+        if(game.getCurrentPlayer().getHand().size() == 0){
+            game.draw(game.getCurrentPlayer(), 2);
+        }
+        else{
+            game.draw(game.getCurrentPlayer());
+        }
     }
 
     @Override
     public void update() {
-        time += 0.00008;
+        time += 0.016;
     }
 
     @Override

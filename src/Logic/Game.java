@@ -1,5 +1,8 @@
 package Logic;
 
+import Card.Card;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -7,9 +10,9 @@ public class Game {
     private List<Player> players;
     private int numPlayers;
     private int currentPlayer;
-    private List<String> cardTypes;
+    private Stack<Card> deck = new Stack<>();
 
-    public final int numcards = 21;
+    public final int numCards = 21;
 
     private List<String> turnLog = new ArrayList<>();
 
@@ -30,7 +33,34 @@ public class Game {
         numPlayers = players.size();
         currentPlayer = 0;
 
+        for (Card c : new Card[]{
+            GameCardTypes.Baron.makeCard(),
+            GameCardTypes.Countess.makeCard(),
+            GameCardTypes.Princess.makeCard(),
+            GameCardTypes.Guard.makeCard(),
+            GameCardTypes.King.makeCard(),
+            GameCardTypes.Prince.makeCard(),
+            GameCardTypes.Handmaid.makeCard(),
+            GameCardTypes.Priest.makeCard(),
+            GameCardTypes.Guard.makeCard(),
+            GameCardTypes.Guard.makeCard(),
+            GameCardTypes.Prince.makeCard(),
+            GameCardTypes.Priest.makeCard(),
+            GameCardTypes.Handmaid.makeCard(),
+            GameCardTypes.Guard.makeCard(),
+            GameCardTypes.Baron.makeCard(),
+            GameCardTypes.Guard.makeCard(),
+        }) deck.push(c);
+
         currState = States.MAIN;
+    }
+
+    public void draw(@NotNull Player player){draw(player, 1);}
+    public void draw(@NotNull Player player, int num){
+        while(num --> 0) {
+            player.draw(deck.peek());
+            deck.pop();
+        }
     }
 
     public Player getCurrentPlayer(){
