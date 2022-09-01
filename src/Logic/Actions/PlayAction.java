@@ -35,7 +35,7 @@ public class PlayAction extends Action {
             else
                 players.get(i).drawAsMain(canvas, i, game.getNumPlayers());
 
-        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 40).drawText(canvas.width / 2, 0, "Pick a card");
+        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 40).drawText(canvas.width * .5, 0, "Pick a card");
     }
 
     @Override
@@ -44,7 +44,7 @@ public class PlayAction extends Action {
             var hand = game.getCurrentPlayer().getHand();
             for (int i = 0; i < hand.size(); i++) {
                 if (hand.get(i).clicked(me)) {
-                    postAction = game.getCurrentPlayer().discard(i).getAction();
+                    postAction = game.getCurrentPlayer().discard(i).getAction(game);
                     finished = true;
                 }
             }

@@ -91,5 +91,12 @@ public class Player {
         for(int i = 0; i < discard.size(); i++){
             discard.get(i).draw(canvas, offsetX + 20, offsetY + 40 + (int)(cardHeight * cardOffset * i), cardWidth);
         }
+
+        if(out){
+            canvas.graphics.setColor(Color.RED);
+            canvas.graphics.drawLine(offsetX + 20, offsetY, offsetX + cardWidth + 20, offsetY + 20);
+            canvas.graphics.drawLine(offsetX + 20, offsetY + 20, offsetX + cardWidth + 20, offsetY);
+            canvas.graphics.setColor(Color.BLACK);
+        }
     }
 }

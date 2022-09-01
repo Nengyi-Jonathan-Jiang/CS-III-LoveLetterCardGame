@@ -2,6 +2,7 @@ package Card;
 
 import Graphics.UI.ImageButton;
 import Graphics.GameCanvas;
+import Logic.Game;
 import Scheduler.Action;
 
 public class Card extends ImageButton {
@@ -12,8 +13,12 @@ public class Card extends ImageButton {
         this.cardType = cardType;
     }
 
-    public Action getAction(){
-        return cardType.getAction();
+    public String getName(){
+        return cardType.getName();
+    }
+
+    public Action getAction(Game game){
+        return cardType.getAction(game);
     }
 
     public void draw(GameCanvas canvas, int x, int y, int scale){

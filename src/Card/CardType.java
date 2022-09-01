@@ -1,6 +1,7 @@
 package Card;
 
 import Graphics.ImageLoader;
+import Logic.Game;
 import Scheduler.Action;
 
 public abstract class CardType {
@@ -9,13 +10,13 @@ public abstract class CardType {
         System.out.println("Loaded: " + "Card_" + getName() + ".png");
     }
 
-    public Action getAction(){
+    public Action getAction(Game game){
         return new Action(){};
     }
 
-    protected abstract String getName();
-    protected abstract int getValue();
-    protected abstract String[] getDescription();
+    public abstract String getName();
+    public abstract int getValue();
+    public abstract String[] getDescription();
 
     public final Card makeCard(){
         return new Card(this);

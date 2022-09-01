@@ -7,7 +7,6 @@ import java.util.Iterator;
 
 public class GameAction extends Action {
     private final Game game;
-    private boolean isFinished = false;
 
     public GameAction(Game game){
         this.game = game;
@@ -18,7 +17,7 @@ public class GameAction extends Action {
         return new Iterator<>() {
             @Override
             public boolean hasNext() {
-                return true;
+                return !game.deckEmpty();
             }
 
             @Override
@@ -26,10 +25,5 @@ public class GameAction extends Action {
                 return new TurnAction(game);
             }
         };
-    }
-
-    @Override
-    public boolean isFinished() {
-        return isFinished;
     }
 }

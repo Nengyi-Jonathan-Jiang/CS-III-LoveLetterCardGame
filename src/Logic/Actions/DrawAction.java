@@ -18,18 +18,6 @@ public class DrawAction extends Action {
     }
 
     @Override
-    public void draw(GameCanvas canvas) {
-
-        List<Player> players = game.getPlayers();
-
-        for(int i = 0; i < players.size(); i++)
-            if(i != game.getCurrentPosition())
-                players.get(i).drawAsOther(canvas, i, game.getNumPlayers());
-            else
-                players.get(i).drawAsMain(canvas, i, game.getNumPlayers());
-    }
-
-    @Override
     public void onStart() {
         if(game.getCurrentPlayer().getHand().size() == 0){
             game.draw(game.getCurrentPlayer(), 2);
@@ -38,12 +26,4 @@ public class DrawAction extends Action {
             game.draw(game.getCurrentPlayer());
         }
     }
-
-    @Override
-    public void update() {
-        time += 0.016;
-    }
-
-    @Override
-    public boolean isFinished() { return time > 1; }
 }

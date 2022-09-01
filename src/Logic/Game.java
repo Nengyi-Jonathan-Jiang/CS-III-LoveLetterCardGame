@@ -55,6 +55,10 @@ public class Game {
         currState = States.MAIN;
     }
 
+    public boolean deckEmpty(){
+        return deck.size() <= 1;
+    }
+
     public void draw(@NotNull Player player){draw(player, 1);}
     public void draw(@NotNull Player player, int num){
         while(num --> 0) {
