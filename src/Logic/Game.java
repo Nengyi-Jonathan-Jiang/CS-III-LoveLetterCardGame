@@ -79,6 +79,17 @@ public class Game {
                 .collect(Collectors.toList());
     }
 
+    public List<Player> getActivePlayers(){
+        return players.stream().filter(player->!player.isOut()).collect(Collectors.toList());
+    }
+
+    public List<Player> getOtherActivePlayers(){
+        return players.stream()
+                .filter(player->!player.isOut())
+                .filter(i->i != getCurrentPlayer())
+                .collect(Collectors.toList());
+    }
+
     public int getCurrentPosition(){
         return currentPlayer;
     }

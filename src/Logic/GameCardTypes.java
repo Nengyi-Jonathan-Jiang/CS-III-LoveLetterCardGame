@@ -36,11 +36,13 @@ public class GameCardTypes {
 
                 @Override
                 public Iterator<? extends Action> getPreActions() {
-                    return List.of(new TargetSelectAction(game, game.getOtherPlayers(), (Player player)->{
+                    return List.of(new TargetSelectAction(game, game.getOtherActivePlayers(), (Player player)->{
                         selectedPlayer = player;
-                    }),new CardSelectAction(game, GameCardTypes.getAll(), (CardType card)->{
-                        cardType = card;
-                    })).iterator();
+                    }),new CardSelectAction(
+                        game,
+                        GameCardTypes.getAll().stream().filter(i->!i.getName().equals("Guard")).collect(Collectors.toList()),
+                        card -> cardType = card
+                    )).iterator();
                 }
 
                 @Override
