@@ -2,11 +2,19 @@ package Logic;
 
 import Card.Card;
 import Card.CardType;
+import Graphics.GameCanvas;
+import Graphics.Painter;
 import Logic.Actions.CardSelectAction;
+import Logic.Actions.DrawAction;
 import Logic.Actions.PlayerSelectionAction;
 import Logic.Actions.TargetSelectAction;
 import Scheduler.Action;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,38 +35,6 @@ public class GameCardTypes {
 
 
     public static final CardType Guard = new CardType() {
-
-        @Override
-        public Action getAction(Game game) {
-            return new Action() {
-                private Player selectedPlayer;
-                private CardType cardType;
-
-                @Override
-                public Iterator<? extends Action> getPreActions() {
-                    return List.of(new TargetSelectAction(game, game.getOtherActivePlayers(), (Player player)->{
-                        selectedPlayer = player;
-                    }),new CardSelectAction(
-                        game,
-                        GameCardTypes.getAll().stream().filter(i->!i.getName().equals("Guard")).collect(Collectors.toList()),
-                        card -> cardType = card
-                    )).iterator();
-                }
-
-                @Override
-                public void onFinish() {
-                    System.out.println(
-                        "Guard selected " + selectedPlayer.getName() + ": hand was " +
-                        selectedPlayer.getHand().stream().map(i -> i.getName()).collect(Collectors.toList()) +
-                        ", guess was " + cardType.getName()
-                    );
-                    if(selectedPlayer.getHand().stream().anyMatch(c -> c.getName().equals(cardType.getName()))){
-                        selectedPlayer.eliminate();
-                    }
-                }
-            };
-        }
-
         @Override public String getName() { return "Guard"; }
         @Override public int getValue() { return 1; }
         @Override
@@ -68,6 +44,34 @@ public class GameCardTypes {
             "has that card, they are out of",
             "the round."
         }; }
+
+        @Override
+        public Action getAction(Game game) {
+            return new Action() {
+                private Player selectedPlayer;
+                private CardType cardType;
+
+                @Override
+                public Iterator<? extends Action> getPreActions() {
+                    return List.of(new TargetSelectAction(
+                            game,
+                            game.getOtherActivePlayers(),
+                            (Player player) -> selectedPlayer = player
+                    ),new CardSelectAction(
+                            game,
+                            GameCardTypes.getAll().stream().filter(i->!i.getName().equals("Guard")).collect(Collectors.toList()),
+                            card -> cardType = card
+                    )).iterator();
+                }
+
+                @Override
+                public void onFinish() {
+                    if(selectedPlayer.getHand().stream().anyMatch(c -> c.getName().equals(cardType.getName()))){
+                        selectedPlayer.eliminate();
+                    }
+                }
+            };
+        }
     };
 
 
@@ -80,6 +84,49 @@ public class GameCardTypes {
             "Choose a player and look at",
             "their hand."
         }; }
+
+        @Override
+        public Action getAction(Game game) {
+            return new Action() {
+                private Player selectedPlayer;
+                private boolean finished = false;
+
+                @Override
+                public Iterator<? extends Action> getPreActions() {
+                    return Collections.singletonList(new TargetSelectAction(
+                            game,
+                            game.getOtherActivePlayers(),
+                            (Player player) -> selectedPlayer = player
+                    )).iterator();
+                }
+
+                @Override
+                public void draw(GameCanvas canvas) {
+                    if(selectedPlayer.getHand().size() == 0){
+                        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
+                                canvas.width / 2, 30, Painter.ALIGN_CENTER_H, selectedPlayer.getName() + "'s hand is empty"
+                        );
+                    }
+                    else {
+                        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
+                                canvas.width / 2, 30, Painter.ALIGN_CENTER_H, selectedPlayer.getName() + "'s hand is"
+                        );
+                        int w = canvas.width / 5;
+                        selectedPlayer.getHand().get(0).draw(canvas, canvas.width / 2 - w / 2, 70, w);
+                    }
+                }
+
+                @Override
+                public void processEvents(MouseEvent me, KeyEvent ke) {
+                    if(me != null) finished = true;
+                }
+
+                @Override
+                public boolean isFinished() {
+                    return finished;
+                }
+            };
+        }
     };
 
     public static final CardType Baron = new CardType() {
@@ -93,6 +140,33 @@ public class GameCardTypes {
             "Whoever has the lower value",
             "is out of the round."
         }; }
+
+        @Override
+        public Action getAction(Game game) {
+            return new Action() {
+                private Player selectedPlayer;
+
+                @Override
+                public Iterator<? extends Action> getPreActions() {
+                    return Collections.singletonList(new TargetSelectAction(
+                            game,
+                            game.getOtherActivePlayers(),
+                            (Player player) -> selectedPlayer = player
+                    )).iterator();
+                }
+
+                @Override
+                public void onFinish() {
+                    Player a = game.getCurrentPlayer(), b = selectedPlayer;
+                    if(a.getHand().get(0).getValue() < b.getHand().get(0).getValue()){
+                        a.eliminate();
+                    }
+                    else{
+                        b.eliminate();
+                    }
+                }
+            };
+        }
     };
 
     public static final CardType Handmaid = new CardType() {
@@ -117,18 +191,89 @@ public class GameCardTypes {
             "yourself). That player discards",
             "their hand and redraws."
         }; }
+
+        @Override
+        public Action getAction(Game game) {
+            return new Action() {
+                private Player selectedPlayer;
+
+                @Override
+                public Iterator<? extends Action> getPreActions() {
+                    return Collections.singletonList(new TargetSelectAction(
+                            game,
+                            game.getActivePlayers(),
+                            (Player player) -> selectedPlayer = player
+                    )).iterator();
+                }
+
+                @Override
+                public void onFinish() {
+                    selectedPlayer.getHand().remove(0);
+                    game.draw(selectedPlayer);
+                }
+            };
+        }
     };
 
     public static final CardType Chancellor = new CardType() {
 
-        @Override public String getName() { return "Chancellor"; }
-        @Override public int getValue() { return 6; }
         @Override
-        public String[] getDescription() { return new String[]{
-            "Draw 2 cards. Keep 1 card and",
-            "put your other 2 on the bottom",
-            "of the deck in any order."
-        }; }
+        public String getName() {
+            return "Chancellor";
+        }
+
+        @Override
+        public int getValue() {
+            return 6;
+        }
+
+        @Override
+        public String[] getDescription() {
+            return new String[]{
+                    "Draw 2 cards. Keep 1 card and",
+                    "put your other 2 on the bottom",
+                    "of the deck in any order."
+            };
+        }
+
+        @Override
+        public Action getAction(Game game) {
+            return new Action() {
+                @Override
+                public Iterator<? extends Action> getPreActions() {
+                    return Collections.singletonList(new DrawAction(
+                            game, 2
+                    )).iterator();
+                }
+
+                @Override
+                public void draw(GameCanvas canvas) {
+                    new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 40).drawText(
+                            canvas.width * .5, 30, Painter.ALIGN_CENTER_H, "Remove card from hand"
+                    );
+
+                    game.getCurrentPlayer().drawHand(canvas, game.getNumPlayers());
+                }
+
+                @Override
+                public void processEvents(MouseEvent me, KeyEvent ke) {
+                    if(me != null){
+                        List<Card> hand = game.getCurrentPlayer().getHand();
+                        int toBeRemoved = -1;
+                        for(int i = 0; i < hand.size(); i++){
+                            Card c = hand.get(i);
+                            if(c.clicked(me)) toBeRemoved = i;
+                        }
+                        if(toBeRemoved != -1) game.getCurrentPlayer().discard(toBeRemoved);
+                    }
+                }
+
+                @Override
+                public boolean isFinished() {
+                    return game.getCurrentPlayer().getHand().size() == 1;
+                }
+            };
+        }
     };
 
     public static final CardType King = new CardType() {
@@ -140,6 +285,29 @@ public class GameCardTypes {
             "Choose another player and trade",
             "hands with them."
         }; }
+
+        @Override
+        public Action getAction(Game game) {
+            return new Action() {
+                private Player selectedPlayer;
+
+                @Override
+                public Iterator<? extends Action> getPreActions() {
+                    return Collections.singletonList(new TargetSelectAction(
+                            game,
+                            game.getOtherActivePlayers(),
+                            (Player player) -> selectedPlayer = player
+                    )).iterator();
+                }
+
+                @Override
+                public void onFinish() {
+                    Card c = selectedPlayer.getHand().remove(0);
+                    selectedPlayer.getHand().add(game.getCurrentPlayer().getHand().remove(0));
+                    game.getCurrentPlayer().getHand().add(c);
+                }
+            };
+        }
     };
 
     public static final CardType Countess = new CardType() {
@@ -153,7 +321,6 @@ public class GameCardTypes {
         }; }
     };
 
-
     public static final CardType Princess = new CardType() {
 
         @Override public String getName() { return "Princess"; }
@@ -164,7 +331,6 @@ public class GameCardTypes {
             "you are out of the round."
         }; }
     };
-
 
     public static List<CardType> getAll(){
         return List.of(Spy, Guard, Priest, Baron, Handmaid, Prince, Chancellor, King, Countess, Princess);

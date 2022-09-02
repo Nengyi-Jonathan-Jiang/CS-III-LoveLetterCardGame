@@ -35,24 +35,31 @@ public class Game {
 
         for (Card c : new Card[]{
             GameCardTypes.Baron.makeCard(),
-            GameCardTypes.Countess.makeCard(),
             GameCardTypes.Princess.makeCard(),
+            GameCardTypes.Spy.makeCard(),
+            GameCardTypes.Chancellor.makeCard(),
             GameCardTypes.Guard.makeCard(),
             GameCardTypes.King.makeCard(),
             GameCardTypes.Prince.makeCard(),
             GameCardTypes.Handmaid.makeCard(),
+            GameCardTypes.Countess.makeCard(),
             GameCardTypes.Priest.makeCard(),
             GameCardTypes.Guard.makeCard(),
             GameCardTypes.Guard.makeCard(),
             GameCardTypes.Prince.makeCard(),
+            GameCardTypes.Guard.makeCard(),
             GameCardTypes.Priest.makeCard(),
             GameCardTypes.Handmaid.makeCard(),
             GameCardTypes.Guard.makeCard(),
+            GameCardTypes.Spy.makeCard(),
             GameCardTypes.Baron.makeCard(),
+            GameCardTypes.Chancellor.makeCard(),
             GameCardTypes.Guard.makeCard(),
         }) deck.push(c);
 
         currState = States.MAIN;
+
+        players.forEach(this::draw);
     }
 
     public boolean deckEmpty(){

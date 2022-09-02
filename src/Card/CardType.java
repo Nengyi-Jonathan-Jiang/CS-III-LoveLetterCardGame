@@ -6,7 +6,8 @@ import Scheduler.Action;
 
 public abstract class CardType {
     public CardType(){
-        ImageLoader.add("Card_" + getName() + ".png", getName());
+//        ImageLoader.add("Card_" + getName() + ".png", getName());
+        ImageLoader.add(getName() + ".png", getName());
         System.out.println("Loaded: " + "Card_" + getName() + ".png");
     }
 

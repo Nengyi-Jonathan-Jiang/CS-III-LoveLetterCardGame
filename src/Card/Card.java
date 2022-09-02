@@ -17,6 +17,10 @@ public class Card extends ImageButton {
         return cardType.getName();
     }
 
+    public int getValue(){
+        return cardType.getValue();
+    }
+
     public Action getAction(Game game){
         return cardType.getAction(game);
     }

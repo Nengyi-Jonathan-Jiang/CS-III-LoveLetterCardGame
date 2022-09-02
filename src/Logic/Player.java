@@ -41,27 +41,33 @@ public class Player {
     public Card discard(int i){
         var res = hand.remove(i);
         discard.add(res);
+        if(res.getName().equals("Princess")) eliminate();
         return res;
     }
 
     public void drawAsMain(GameCanvas canvas, int position, int totalPlayers){
         drawSide(canvas, position, totalPlayers, new Font("Times New Roman", Font.BOLD, 20), name + "(You)");
 
-        double cardOffset = .25;
-        int m = (int)((canvas.height / ((totalPlayers + 1) / 2) - 60) / (1 + (Math.ceil(1. * game.numCards / totalPlayers) - 1) * cardOffset) * 5 / 7 + 40);
-
         new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 40).drawText(
             canvas.width * .5, 30, Painter.ALIGN_CENTER_H, name + "'s turn."
         );
+
+        drawHand(canvas, totalPlayers);
+    }
+
+    public void drawHand(GameCanvas canvas, int totalPlayers){
+
+        double cardOffset = .25;
+        int m = (int)((canvas.height / ((totalPlayers + 1) / 2) - 60) / (1 + (Math.ceil(1. * game.numCards / totalPlayers) - 1) * cardOffset) * 5 / 7 + 40);
 
         int width = (canvas.width - 2 * m);
         int cardWidth = Math.min(300, width / 3 - 20);
 
         for(int i = 0; i < hand.size(); i++){
             hand.get(i).draw(canvas, canvas.width / 2 - cardWidth / 2 +
-                (int)((width / 3) * (i - (hand.size() - 1) * .5)),
-                100,
-                cardWidth
+                            (int)((width / 3) * (i - (hand.size() - 1) * .5)),
+                    100,
+                    cardWidth
             );
         }
     }

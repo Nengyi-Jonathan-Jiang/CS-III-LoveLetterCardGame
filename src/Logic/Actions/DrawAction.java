@@ -13,17 +13,17 @@ public class DrawAction extends Action {
 
     private double time = 0;
 
+    private final int num;
+
     public DrawAction(Game game){
-        this.game = game;
+        this(game, 1);
+    }
+    public DrawAction(Game game, int num){
+        this.game = game; this.num = num;
     }
 
     @Override
     public void onStart() {
-        if(game.getCurrentPlayer().getHand().size() == 0){
-            game.draw(game.getCurrentPlayer(), 2);
-        }
-        else{
-            game.draw(game.getCurrentPlayer());
-        }
+        game.draw(game.getCurrentPlayer(), num);
     }
 }
