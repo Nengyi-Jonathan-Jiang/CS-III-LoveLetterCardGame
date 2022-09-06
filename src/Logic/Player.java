@@ -102,6 +102,8 @@ public class Player {
             canvas.graphics.setColor(Color.RED);
             canvas.graphics.drawLine(offsetX + 20, offsetY, offsetX + cardWidth + 20, offsetY + 20);
             canvas.graphics.drawLine(offsetX + 20, offsetY + 20, offsetX + cardWidth + 20, offsetY);
+            canvas.graphics.setColor(new Color(255, 0, 0, 50));
+            canvas.graphics.fillRect(offsetX, offsetY, w, h);
             canvas.graphics.setColor(Color.BLACK);
         }
     }

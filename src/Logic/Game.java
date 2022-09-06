@@ -10,7 +10,7 @@ public class Game {
     private List<Player> players;
     private int numPlayers;
     private int currentPlayer;
-    private Stack<Card> deck = new Stack<>();
+    private Deque<Card> deck = new ArrayDeque<>();
 
     public final int numCards = 21;
 
@@ -55,11 +55,15 @@ public class Game {
             GameCardTypes.Baron.makeCard(),
             GameCardTypes.Chancellor.makeCard(),
             GameCardTypes.Guard.makeCard(),
-        }) deck.push(c);
+        }) deck.addLast(c);
 
         currState = States.MAIN;
 
         players.forEach(this::draw);
+    }
+
+    public void returnCard(Card c){
+        deck.addLast(c);
     }
 
     public boolean deckEmpty(){

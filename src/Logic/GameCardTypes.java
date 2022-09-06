@@ -57,18 +57,44 @@ public class GameCardTypes {
                             game,
                             game.getOtherActivePlayers(),
                             (Player player) -> selectedPlayer = player
-                    ),new CardSelectAction(
+                    ), new CardSelectAction(
                             game,
-                            GameCardTypes.getAll().stream().filter(i->!i.getName().equals("Guard")).collect(Collectors.toList()),
+                            GameCardTypes.getAll().stream().filter(i -> !i.getName().equals("Guard")).collect(Collectors.toList()),
                             card -> cardType = card
-                    )).iterator();
+                    ), new Action() {
+                        @Override
+                        public void onFinish() {
+                            if(selectedPlayer.getHand().stream().anyMatch(c -> c.getName().equals(cardType.getName()))){
+                                selectedPlayer.eliminate();
+                            }
+                        }
+                    }).iterator();
+                }
+
+                private boolean finished = false;
+
+                @Override
+                public void draw(GameCanvas canvas) {
+                    if(selectedPlayer.isOut()){
+                        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
+                                canvas.width / 2, 30, Painter.ALIGN_CENTER_H, "You eliminated " + selectedPlayer.getName() + "!"
+                        );
+                    }
+                    else{
+                        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
+                                canvas.width / 2, 30, Painter.ALIGN_CENTER_H, selectedPlayer.getName() + " did not have that card."
+                        );
+                    }
                 }
 
                 @Override
-                public void onFinish() {
-                    if(selectedPlayer.getHand().stream().anyMatch(c -> c.getName().equals(cardType.getName()))){
-                        selectedPlayer.eliminate();
-                    }
+                public void processEvents(MouseEvent me, KeyEvent ke) {
+                    if(me != null) finished = true;
+                }
+
+                @Override
+                public boolean isFinished() {
+                    return finished;
                 }
             };
         }
@@ -148,22 +174,51 @@ public class GameCardTypes {
 
                 @Override
                 public Iterator<? extends Action> getPreActions() {
-                    return Collections.singletonList(new TargetSelectAction(
+                    return List.of(new TargetSelectAction(
                             game,
                             game.getOtherActivePlayers(),
                             (Player player) -> selectedPlayer = player
-                    )).iterator();
+                    ), new Action(){
+                        @Override
+                        public void onFinish() {
+                            Player a = game.getCurrentPlayer(), b = selectedPlayer;
+                            if(a.getHand().get(0).getValue() < b.getHand().get(0).getValue()){
+                                a.eliminate();
+                            }
+                            else{
+                                b.eliminate();
+                            }
+                        }
+                    }).iterator();
+                }
+
+                private boolean finished = false;
+
+                @Override
+                public void draw(GameCanvas canvas) {
+                    new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
+                            canvas.width / 2, 30, Painter.ALIGN_CENTER_H, selectedPlayer.getName() + " had " + selectedPlayer.getHand().get(0).getName()
+                    );
+                    if(selectedPlayer.isOut()){
+                        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
+                                canvas.width / 2, 70, Painter.ALIGN_CENTER_H, selectedPlayer.getName() + " is out!"
+                        );
+                    }
+                    else{
+                        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
+                                canvas.width / 2, 70, Painter.ALIGN_CENTER_H, "You are out!"
+                        );
+                    }
                 }
 
                 @Override
-                public void onFinish() {
-                    Player a = game.getCurrentPlayer(), b = selectedPlayer;
-                    if(a.getHand().get(0).getValue() < b.getHand().get(0).getValue()){
-                        a.eliminate();
-                    }
-                    else{
-                        b.eliminate();
-                    }
+                public void processEvents(MouseEvent me, KeyEvent ke) {
+                    if(me != null) finished = true;
+                }
+
+                @Override
+                public boolean isFinished() {
+                    return finished;
                 }
             };
         }
@@ -208,7 +263,7 @@ public class GameCardTypes {
 
                 @Override
                 public void onFinish() {
-                    selectedPlayer.getHand().remove(0);
+                    selectedPlayer.discard(0);
                     game.draw(selectedPlayer);
                 }
             };
@@ -264,7 +319,9 @@ public class GameCardTypes {
                             Card c = hand.get(i);
                             if(c.clicked(me)) toBeRemoved = i;
                         }
-                        if(toBeRemoved != -1) game.getCurrentPlayer().discard(toBeRemoved);
+                        if(toBeRemoved != -1){
+                            game.returnCard(game.getCurrentPlayer().getHand().remove(toBeRemoved));
+                        }
                     }
                 }
 
@@ -293,18 +350,47 @@ public class GameCardTypes {
 
                 @Override
                 public Iterator<? extends Action> getPreActions() {
-                    return Collections.singletonList(new TargetSelectAction(
+                    return List.of(new TargetSelectAction(
                             game,
                             game.getOtherActivePlayers(),
                             (Player player) -> selectedPlayer = player
-                    )).iterator();
+                    ), new Action(){
+                        @Override
+                        public void onFinish() {
+                            Card c = selectedPlayer.getHand().remove(0);
+                            selectedPlayer.getHand().add(game.getCurrentPlayer().getHand().remove(0));
+                            game.getCurrentPlayer().getHand().add(c);
+                        }
+                    }).iterator();
+                }
+
+                private boolean finished = false;
+
+                @Override
+                public void draw(GameCanvas canvas) {
+                    new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
+                            canvas.width / 2, 30, Painter.ALIGN_CENTER_H, selectedPlayer.getName() + " had " + selectedPlayer.getHand().get(0).getName()
+                    );
+                    if(selectedPlayer.isOut()){
+                        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
+                                canvas.width / 2, 70, Painter.ALIGN_CENTER_H, selectedPlayer.getName() + " is out!"
+                        );
+                    }
+                    else{
+                        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
+                                canvas.width / 2, 70, Painter.ALIGN_CENTER_H, "You are out!"
+                        );
+                    }
                 }
 
                 @Override
-                public void onFinish() {
-                    Card c = selectedPlayer.getHand().remove(0);
-                    selectedPlayer.getHand().add(game.getCurrentPlayer().getHand().remove(0));
-                    game.getCurrentPlayer().getHand().add(c);
+                public void processEvents(MouseEvent me, KeyEvent ke) {
+                    if(me != null) finished = true;
+                }
+
+                @Override
+                public boolean isFinished() {
+                    return finished;
                 }
             };
         }
@@ -319,6 +405,38 @@ public class GameCardTypes {
             "If the King or Prince is in your",
             "hand, you must play this card."
         }; }
+
+        @Override
+        public Action getAction(Game game) {
+            return new Action() {
+                private boolean finished = true;
+
+                @Override
+                public void onStart() {
+                    if(
+                        game.getCurrentPlayer().getHand().get(0).getName().equals("Prince")
+                        || game.getCurrentPlayer().getHand().get(0).getName().equals("King")
+                    ) finished = false;
+                }
+
+                @Override
+                public void draw(GameCanvas canvas) {
+                    new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
+                            canvas.width / 2, 30, Painter.ALIGN_CENTER_H, "You were forced to play Countess! You had a " + game.getCurrentPlayer().getHand().get(0).getName() + " in your hand!"
+                    );
+                }
+
+                @Override
+                public void processEvents(MouseEvent me, KeyEvent ke) {
+                    if(me != null) finished = true;
+                }
+
+                @Override
+                public boolean isFinished() {
+                    return finished;
+                }
+            };
+        }
     };
 
     public static final CardType Princess = new CardType() {
@@ -330,6 +448,29 @@ public class GameCardTypes {
             "If you play or discard this card,",
             "you are out of the round."
         }; }
+
+        public Action getAction(Game game) {
+            return new Action() {
+                private boolean finished = false;
+
+                @Override
+                public void draw(GameCanvas canvas) {
+                    new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
+                            canvas.width / 2, 30, Painter.ALIGN_CENTER_H, "You played the Princess! You are out!"
+                    );
+                }
+
+                @Override
+                public void processEvents(MouseEvent me, KeyEvent ke) {
+                    if(me != null) finished = true;
+                }
+
+                @Override
+                public boolean isFinished() {
+                    return finished;
+                }
+            };
+        }
     };
 
     public static List<CardType> getAll(){
