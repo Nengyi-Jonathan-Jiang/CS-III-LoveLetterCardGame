@@ -26,7 +26,7 @@ public class GameAction extends Action {
         return Util.concatIterators(new Iterator<TurnAction>() {
             @Override
             public boolean hasNext() {
-                return !game.deckEmpty() && game.getPlayers().stream().filter(player->!player.isOut()).count() >= 2;
+                return !game.deckEmpty() && game.getAllPlayers().stream().filter(player->!player.isEliminated()).count() >= 2;
             }
 
             @Override

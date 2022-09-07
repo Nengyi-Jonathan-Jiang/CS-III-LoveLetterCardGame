@@ -2,8 +2,8 @@ package Logic.Actions;
 
 import Graphics.GameCanvas;
 import Graphics.Painter;
-import Graphics.UI.TextButton;
-import Graphics.UI.InputButton;
+import Graphics.Buttons.TextButton;
+import Graphics.Buttons.InputButton;
 import Logic.Game;
 import Scheduler.Action;
 

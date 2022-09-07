@@ -1,9 +1,10 @@
 package Logic.Actions;
 
-import Card.Card;
 import Graphics.GameCanvas;
 import Graphics.Painter;
+import Graphics.Buttons.CardButton;
 import Logic.Game;
+import Logic.GameCardTypes;
 import Logic.Player;
 import Scheduler.Action;
 
@@ -13,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PlayAction extends Action {
     private final Game game;
@@ -22,6 +22,8 @@ public class PlayAction extends Action {
 
     private Action postAction = null;
 
+    private List<CardButton> btns;
+
     public PlayAction(Game game){
         this.game = game;
     }
@@ -29,40 +31,42 @@ public class PlayAction extends Action {
     @Override
     public void onStart() {
         Player p = game.getCurrentPlayer();
-        List<String> h = p.getHand().stream().map(Card::getName).collect(Collectors.toList());
-        if(h.stream().anyMatch(i->i.equals("Countess")) && (
-            h.stream().anyMatch(i->i.equals("Prince")) || h.stream().anyMatch(i->i.equals("King"))
+        if(p.has(GameCardTypes.Countess) && (
+            p.has(GameCardTypes.Prince) || p.has(GameCardTypes.King)
         )){
-            int idx = -1;
-            for(int i = 0; i < h.size(); i++){
-                if(h.get(i).equals("Countess")) idx = i;
-            }
-            postAction = game.getCurrentPlayer().discard(idx).getAction(game);
+            p.discardCard(GameCardTypes.Countess);
+            postAction = GameCardTypes.Countess.getAction(game);
             finished = true;
         }
+        btns = p.getButtons();
     }
 
     @Override
     public void draw(GameCanvas canvas) {
 
-        List<Player> players = game.getPlayers();
+        List<Player> players = game.getAllPlayers();
 
-        for(int i = 0; i < players.size(); i++)
-            if(i != game.getCurrentPosition())
-                players.get(i).drawAsOther(canvas, i, game.getNumPlayers());
-            else
-                players.get(i).drawAsMain(canvas, i, game.getNumPlayers());
+        for (Player player : players) {
+            player.drawSide(canvas);
+        }
 
-        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 40).drawText(canvas.width * .5, 0, "Pick a card");
+        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 40).drawText(
+                canvas.width * .5, 40, Painter.ALIGN_CENTER_H, game.getCurrentPlayer().getName() + "'s turn."
+        );
+
+        game.getCurrentPlayer().drawHand(canvas, btns);
+
+        new Painter(canvas.graphics)
+                .setFont("Times New Roman", Font.PLAIN, 40)
+                .drawText(canvas.width * .5, 0, Painter.ALIGN_CENTER_H, "Pick a card");
     }
 
     @Override
     public void processEvents(MouseEvent me, KeyEvent ke) {
         if(me != null) {
-            var hand = game.getCurrentPlayer().getHand();
-            for (int i = 0; i < hand.size(); i++) {
-                if (hand.get(i).clicked(me)) {
-                    postAction = game.getCurrentPlayer().discard(i).getAction(game);
+            for (int i = 0; i < btns.size(); i++) {
+                if (btns.get(i).clicked(me)) {
+                    postAction = game.getCurrentPlayer().discardCard(i).getAction(game);
                     finished = true;
                 }
             }

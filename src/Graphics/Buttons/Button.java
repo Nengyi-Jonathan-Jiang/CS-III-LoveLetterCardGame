@@ -1,12 +1,9 @@
-package Graphics.UI;
+package Graphics.Buttons;
 
 import Graphics.GameCanvas;
-import Graphics.Painter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.MouseEvent;
-
-import java.awt.*;
 
 public abstract class Button {
     protected int x, y, width, height;

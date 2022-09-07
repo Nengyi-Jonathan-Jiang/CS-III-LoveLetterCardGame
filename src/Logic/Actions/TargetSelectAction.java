@@ -2,7 +2,7 @@ package Logic.Actions;
 
 import Graphics.GameCanvas;
 import Graphics.Painter;
-import Graphics.UI.TextButton;
+import Graphics.Buttons.TextButton;
 import Logic.Game;
 import Logic.Player;
 import Scheduler.Action;

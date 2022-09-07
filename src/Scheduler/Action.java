@@ -3,6 +3,7 @@ package Scheduler;
 import Graphics.GameCanvas;
 
 import java.awt.event.*;
+import java.util.Arrays;
 import java.util.Iterator;
 
 public abstract class Action {
@@ -14,4 +15,13 @@ public abstract class Action {
     public void onStart(){}
     public void onFinish(){}
     public boolean isFinished(){return true;}
+
+    public static Action chain(Action... actions){
+        return new Action() {
+            @Override
+            public Iterator<? extends Action> getPreActions() {
+                return Arrays.stream(actions).iterator();
+            }
+        };
+    }
 }

@@ -1,4 +1,4 @@
-package Graphics.UI;
+package Graphics.Buttons;
 
 public class InputButton extends TextButton {
     public InputButton(String str){

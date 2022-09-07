@@ -1,10 +1,9 @@
 package Logic.Actions;
 
-import Card.Card;
-import Card.CardType;
+import Logic.Card;
 import Graphics.GameCanvas;
 import Graphics.Painter;
-import Graphics.UI.TextButton;
+import Graphics.Buttons.TextButton;
 import Logic.Game;
 import Scheduler.Action;
 
@@ -16,16 +15,14 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class CardSelectAction extends Action {
-    private final Game game;
-    private final Consumer<CardType> callback;
-    private final List<CardType> Cards;
+    private final Consumer<Card> callback;
+    private final List<Card> Cards;
 
     private boolean finished = false;
 
     private final List<TextButton> btns;
 
-    public CardSelectAction(Game game, List<CardType> cards, Consumer<CardType> callback){
-        this.game = game;
+    public CardSelectAction(List<Card> cards, Consumer<Card> callback){
         this.callback = callback;
         this.Cards = cards;
 

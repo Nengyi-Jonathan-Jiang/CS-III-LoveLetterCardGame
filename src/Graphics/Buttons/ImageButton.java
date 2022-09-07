@@ -1,4 +1,4 @@
-package Graphics.UI;
+package Graphics.Buttons;
 
 import Graphics.GameCanvas;
 import Graphics.ImageLoader;
