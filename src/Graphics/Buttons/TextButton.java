@@ -27,7 +27,7 @@ public class TextButton extends Button{
         canvas.graphics.drawRect(x, y, width, height);
         new Painter(canvas.graphics)
                 .setFont("Times New Roman", Font.PLAIN, fontSize == -1 ? height : fontSize)
-                .drawText(x + width * .5, y + height * .5, Painter.ALIGN_CENTER_H | Painter.ALIGN_CENTER_V, text);
+                .drawText(x + width / 2, y + height / 2, Painter.ALIGN_CENTER_H | Painter.ALIGN_CENTER_V, text);
 
     }
 }

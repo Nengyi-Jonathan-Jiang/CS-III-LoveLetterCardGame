@@ -15,36 +15,29 @@ import java.util.stream.Collectors;
 public class GameAction extends Action {
     private final Game game;
 
-    private Player winner;
-
     public GameAction(Game game){
         this.game = game;
     }
 
     @Override
     public Iterator<? extends Action> getPreActions() {
-        return Util.concatIterators(new Iterator<TurnAction>() {
+        return new Iterator<>() {
             @Override
             public boolean hasNext() {
-                return !game.deckEmpty() && game.getAllPlayers().stream().filter(player->!player.isEliminated()).count() >= 2;
+                return true;
             }
 
             @Override
-            public TurnAction next() {
-                return new TurnAction(game);
+            public Action next() {
+                return new RoundAction(game);
             }
-        }, Collections.singletonList(new Action() {
-            @Override
-            public void onStart() {
-                System.out.println("Woo");
-            }
-        }).iterator());
+        };
     }
 
     @Override
     public void draw(GameCanvas canvas) {
-        new Painter(canvas.graphics).setFont("Times New Roman", Font.BOLD, 40).drawText(canvas.width * .5, 20, Painter.ALIGN_CENTER_H,
-            "Game over. Remaining players: " + game.getActivePlayers().stream().map(Player::getName).collect(Collectors.toList())
+        new Painter(canvas.graphics).setFont("Times New Roman", Font.BOLD, 40).drawText(canvas.width / 2, 20, Painter.ALIGN_CENTER_H,
+            "Game over. " + game.getActivePlayers().stream().map(Player::getName).collect(Collectors.toList())
         );
     }
 
@@ -57,6 +50,6 @@ public class GameAction extends Action {
 
     @Override
     public boolean isFinished() {
-        return time >= 2;
+        return time >= 5;
     }
 }

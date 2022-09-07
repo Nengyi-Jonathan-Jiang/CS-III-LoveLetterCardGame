@@ -1,29 +1,21 @@
 package Logic.Actions;
 
-import Graphics.GameCanvas;
 import Logic.*;
 import Scheduler.Action;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.util.List;
-
 public class DrawAction extends Action {
     private final Game game;
-
-    private double time = 0;
-
-    private final int num;
+    private final int numCardsToDraw;
 
     public DrawAction(Game game){
         this(game, 1);
     }
-    public DrawAction(Game game, int num){
-        this.game = game; this.num = num;
+    public DrawAction(Game game, int numCardsToDraw){
+        this.game = game; this.numCardsToDraw = numCardsToDraw;
     }
 
     @Override
     public void onStart() {
-        game.draw(game.getCurrentPlayer(), num);
+        game.drawCard(game.getCurrentPlayer(), numCardsToDraw);
     }
 }

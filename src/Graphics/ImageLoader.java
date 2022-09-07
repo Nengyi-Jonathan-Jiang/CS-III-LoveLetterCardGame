@@ -13,11 +13,9 @@ public final class ImageLoader {
     public static void add(String filename, String name){
         if(images.containsKey(name)) return;
 
-        BufferedImage img = null;
         try (InputStream inputStream = ImageLoader.class.getResourceAsStream(filename)) {
             if(inputStream != null) {
-                img = ImageIO.read(inputStream);
-                images.put(name, img);
+                images.put(name, ImageIO.read(inputStream));
             }
         }
         catch(Exception e){

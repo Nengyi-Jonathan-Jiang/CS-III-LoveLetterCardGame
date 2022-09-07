@@ -137,7 +137,7 @@ public class PlayerSelectionAction extends Action {
     public void draw(GameCanvas canvas) {
         Painter p = new Painter(canvas.graphics);
         p.setFont("Times New Roman", Font.PLAIN, 20);
-        p.drawText(canvas.width * .5, canvas.height - 20, Painter.ALIGN_CENTER_H | Painter.ALIGN_BOTTOM,
+        p.drawText(canvas.width / 2, canvas.height - 20, Painter.ALIGN_CENTER_H | Painter.ALIGN_BOTTOM,
             new String[]{
                 "Click \"Add Player\" to add a player. Player names may consist of uppercase and",
                 "lowercase letters, digits, and underscores (\"_\")."

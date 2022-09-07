@@ -11,9 +11,7 @@ import java.util.stream.Collectors;
 
 public class Player {
     private final Game game;
-
     private final String name;
-
     private final int index;
 
     private final List<Card> hand;
@@ -21,12 +19,24 @@ public class Player {
 
     private boolean eliminated = false;
 
+    private int affection = 0;
+
     public Player(String name, Game game, int index) {
         this.name = name;
         this.game = game;
         this.index = index;
         hand = new ArrayList<>();
         discarded = new ArrayList<>();
+    }
+
+    public void startRound(){
+        hand.clear();
+        discarded.clear();
+        affection = 0;
+    }
+
+    public int getAffection(){
+        return affection;
     }
 
     public String getName() {
@@ -82,7 +92,11 @@ public class Player {
         return hand.remove(i);
     }
 
-    public void drawHand(GameCanvas canvas, List<CardButton> btns){
+    public void addAffection(){
+        affection++;
+    }
+
+    public void displayHand(GameCanvas canvas, List<CardButton> btns){
         double cardOffset = .25;
         int m = (int)((canvas.height / ((game.getNumPlayers() + 1) / 2) - 60) / (1 + (Math.ceil(1. * game.numCards / game.getNumPlayers()) - 1) * cardOffset) * 5 / 7 + 40);
 
@@ -98,11 +112,11 @@ public class Player {
         }
     }
 
-    public void drawSide(GameCanvas canvas){
-        Font font = game.getCurrentPosition() == index
+    public void displaySide(GameCanvas canvas){
+        Font font = game.getCurrentIndex() == index
                 ? new Font("Times New Roman", Font.PLAIN, 20)
                 : new Font("Times New Roman", Font.BOLD, 20);
-        String name = game.getCurrentPosition() == index
+        String name = game.getCurrentIndex() == index
                 ? this.name + "(You)"
                 : this.name;
 
@@ -121,7 +135,7 @@ public class Player {
 
         new Painter(canvas.graphics)
                 .setFont(font)
-                .drawText(offsetX + w * .5, offsetY, Painter.ALIGN_CENTER_H, name);
+                .drawText(offsetX + w / 2, offsetY, Painter.ALIGN_CENTER_H, name);
 
         for(int i = 0; i < discarded.size(); i++){
             discarded.get(i).getButton().draw(canvas, offsetX + 20, offsetY + 40 + (int)(cardHeight * cardOffset * i), cardWidth);

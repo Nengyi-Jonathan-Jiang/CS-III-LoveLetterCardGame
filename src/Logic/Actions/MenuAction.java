@@ -28,7 +28,7 @@ public class MenuAction extends Action {
     public void draw(GameCanvas canvas) {
         Painter p = new Painter(canvas.graphics);
         p.setFont("Times New Roman", Font.BOLD, 50);
-        p.drawText(canvas.width * .5, canvas.height * .5, Painter.ALIGN_CENTER_H | Painter.ALIGN_CENTER_V, "Click to start game");
+        p.drawText(canvas.width / 2, canvas.height / 2, Painter.ALIGN_CENTER_H | Painter.ALIGN_CENTER_V, "Click to start game");
     }
 
     @Override

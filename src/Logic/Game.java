@@ -1,7 +1,5 @@
 package Logic;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -45,10 +43,14 @@ public class Game {
             GameCardTypes.Guard,
         }) deck.addLast(c);
 
-        players.forEach(this::draw);
+        players.forEach(this::drawCard);
+
+        players.forEach(i->{
+            System.out.println(i.getHandCard().getName());
+        });
     }
 
-    public void returnCard(Card c){
+    public void returnCardToDeck(Card c){
         deck.addLast(c);
     }
 
@@ -56,10 +58,10 @@ public class Game {
         return deck.size() <= 1;
     }
 
-    public void draw(@NotNull Player player){
-        draw(player, 1);
+    public void drawCard(Player player){
+        drawCard(player, 1);
     }
-    public void draw(@NotNull Player player, int num){
+    public void drawCard(Player player, int num){
         while(num --> 0) {
             player.addToHand(deck.peek());
             deck.pop();
@@ -75,17 +77,17 @@ public class Game {
     }
 
     public List<Player> getActivePlayers() {
-        return players.stream().filter(player->!player.isEliminated()).collect(Collectors.toList());
+        return players.stream().filter(player -> !player.isEliminated()).collect(Collectors.toList());
     }
 
     public List<Player> getOtherActivePlayers(){
         return players.stream()
-                .filter(player->!player.isEliminated())
-                .filter(i->i != getCurrentPlayer())
+                .filter(player -> !player.isEliminated())
+                .filter(i -> i != getCurrentPlayer())
                 .collect(Collectors.toList());
     }
 
-    public int getCurrentPosition(){
+    public int getCurrentIndex(){
         return currentPlayer;
     }
 

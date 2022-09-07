@@ -47,18 +47,18 @@ public class PlayAction extends Action {
         List<Player> players = game.getAllPlayers();
 
         for (Player player : players) {
-            player.drawSide(canvas);
+            player.displaySide(canvas);
         }
 
         new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 40).drawText(
-                canvas.width * .5, 40, Painter.ALIGN_CENTER_H, game.getCurrentPlayer().getName() + "'s turn."
+                canvas.width / 2, 40, Painter.ALIGN_CENTER_H, game.getCurrentPlayer().getName() + "'s turn."
         );
 
-        game.getCurrentPlayer().drawHand(canvas, btns);
+        game.getCurrentPlayer().displayHand(canvas, btns);
 
         new Painter(canvas.graphics)
                 .setFont("Times New Roman", Font.PLAIN, 40)
-                .drawText(canvas.width * .5, 0, Painter.ALIGN_CENTER_H, "Pick a card");
+                .drawText(canvas.width / 2, 0, Painter.ALIGN_CENTER_H, "Pick a card");
     }
 
     @Override

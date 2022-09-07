@@ -35,7 +35,7 @@ public class TargetSelectAction extends Action {
     public void draw(GameCanvas canvas) {
         new Painter(canvas.graphics)
             .setFont("Times New Roman", Font.PLAIN, 40)
-            .drawText(canvas.width * .5, 20, Painter.ALIGN_CENTER_H, "Select a target:");
+            .drawText(canvas.width / 2, 20, Painter.ALIGN_CENTER_H, "Select a target:");
 
         for(int i = 0; i < btns.size(); i++){
             TextButton btn = btns.get(i);
