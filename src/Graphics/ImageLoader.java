@@ -13,20 +13,15 @@ public final class ImageLoader {
     public static void add(String filename, String name){
         if(images.containsKey(name)) return;
 
-        try (InputStream inputStream = ImageLoader.class.getResourceAsStream(filename)) {
-            if(inputStream != null) {
-                images.put(name, ImageIO.read(inputStream));
-            }
-        }
-        catch(Exception e){
-            System.out.println("Could not load file \"" + filename + "\"");
-            e.printStackTrace();
-        }
+        images.put(name, load(filename));
     }
     public static BufferedImage load(String filename){
-        try (InputStream inputStream = ImageLoader.class.getResourceAsStream(filename)) {
+        try (InputStream inputStream = ImageLoader.class.getResourceAsStream("../" + filename)) {
             if(inputStream != null) {
                 return ImageIO.read(inputStream);
+            }
+            else{
+                throw new IOException("Null input stream");
             }
         }
         catch(Exception e){
