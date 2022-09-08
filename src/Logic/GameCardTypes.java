@@ -38,7 +38,6 @@ public class GameCardTypes {
                 @Override
                 public Iterator<? extends Action> getPreActions() {
                     return List.of(new TargetSelectAction(
-                            game,
                             game.getOtherActivePlayers(),
                             (Player player) -> selectedPlayer = player
                     ), new CardSelectAction(
@@ -98,7 +97,6 @@ public class GameCardTypes {
                 @Override
                 public Iterator<? extends Action> getPreActions() {
                     return Collections.singletonList(new TargetSelectAction(
-                            game,
                             game.getOtherActivePlayers(),
                             (Player player) -> selectedPlayer = player
                     )).iterator();
@@ -139,7 +137,6 @@ public class GameCardTypes {
                 @Override
                 public Iterator<? extends Action> getPreActions() {
                     return List.of(new TargetSelectAction(
-                            game,
                             game.getOtherActivePlayers(),
                             (Player player) -> selectedPlayer = player
                     ), new Action(){
@@ -204,7 +201,6 @@ public class GameCardTypes {
                 @Override
                 public Iterator<? extends Action> getPreActions() {
                     return Collections.singletonList(new TargetSelectAction(
-                            game,
                             game.getActivePlayers(),
                             (Player player) -> selectedPlayer = player
                     )).iterator();
@@ -288,7 +284,6 @@ public class GameCardTypes {
                 @Override
                 public Iterator<? extends Action> getPreActions() {
                     return List.of(new TargetSelectAction(
-                            game,
                             game.getOtherActivePlayers(),
                             (Player player) -> selectedPlayer = player
                     ), new Action(){
@@ -299,35 +294,6 @@ public class GameCardTypes {
                             game.getCurrentPlayer().addToHand(c);
                         }
                     }).iterator();
-                }
-
-                private boolean finished = false;
-
-                @Override
-                public void draw(GameCanvas canvas) {
-                    new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
-                            canvas.width / 2, 30, Painter.ALIGN_CENTER_H, selectedPlayer.getName() + " had " + selectedPlayer.getHandCard().getName()
-                    );
-                    if(selectedPlayer.isEliminated()){
-                        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
-                                canvas.width / 2, 70, Painter.ALIGN_CENTER_H, selectedPlayer.getName() + " is out!"
-                        );
-                    }
-                    else{
-                        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
-                                canvas.width / 2, 70, Painter.ALIGN_CENTER_H, "You are out!"
-                        );
-                    }
-                }
-
-                @Override
-                public void processEvents(MouseEvent me, KeyEvent ke) {
-                    if(me != null) finished = true;
-                }
-
-                @Override
-                public boolean isFinished() {
-                    return finished;
                 }
             };
         }

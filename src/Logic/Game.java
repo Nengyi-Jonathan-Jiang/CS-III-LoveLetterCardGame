@@ -17,8 +17,14 @@ public class Game {
     public void initializePlayers(List<String> playerNames){
         players = IntStream.range(0, playerNames.size()).mapToObj(i->new Player(playerNames.get(i), this, i)).collect(Collectors.toList());
         numPlayers = players.size();
-        currentPlayer = 0;
-
+        
+        nextRound();
+    }
+    
+    public void nextRound(){
+    
+        players.forEach(Player::startRound);
+    
         for (Card c : new Card[]{
             GameCardTypes.Baron,
             GameCardTypes.Princess,
@@ -42,33 +48,31 @@ public class Game {
             GameCardTypes.Chancellor,
             GameCardTypes.Guard,
         }) deck.addLast(c);
-
+        
         players.forEach(this::drawCard);
-
-        players.forEach(i->{
-            System.out.println(i.getHandCard().getName());
-        });
+    
+        currentPlayer = 0;
     }
 
-    public void returnCardToDeck(Card c){
+    public void returnCardToDeck(Card c) {
         deck.addLast(c);
     }
 
-    public boolean deckEmpty(){
+    public boolean isDeckEmpty() {
         return deck.size() <= 1;
     }
 
-    public void drawCard(Player player){
-        drawCard(player, 1);
+    public void drawCard(Player player) {
+        drawCards(player, 1);
     }
-    public void drawCard(Player player, int num){
+    public void drawCards(Player player, int num) {
         while(num --> 0) {
             player.addToHand(deck.peek());
             deck.pop();
         }
     }
 
-    public Player getCurrentPlayer(){
+    public Player getCurrentPlayer() {
         return players.get(currentPlayer);
     }
 
@@ -80,14 +84,14 @@ public class Game {
         return players.stream().filter(player -> !player.isEliminated()).collect(Collectors.toList());
     }
 
-    public List<Player> getOtherActivePlayers(){
+    public List<Player> getOtherActivePlayers() {
         return players.stream()
                 .filter(player -> !player.isEliminated())
                 .filter(i -> i != getCurrentPlayer())
                 .collect(Collectors.toList());
     }
 
-    public int getCurrentIndex(){
+    public int getCurrentIndex() {
         return currentPlayer;
     }
 
@@ -98,7 +102,7 @@ public class Game {
         } while(getCurrentPlayer().isEliminated());
     }
 
-    public int getNumPlayers(){
+    public int getNumPlayers() {
         return numPlayers;
     }
 }

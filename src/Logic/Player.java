@@ -21,6 +21,8 @@ public class Player {
 
     private int affection = 0;
 
+    private boolean protection = false;
+
     public Player(String name, Game game, int index) {
         this.name = name;
         this.game = game;
@@ -33,6 +35,7 @@ public class Player {
         hand.clear();
         discarded.clear();
         affection = 0;
+        protection = false;
     }
 
     public int getAffection(){
@@ -47,8 +50,16 @@ public class Player {
         return eliminated;
     }
 
+    public boolean isProtected() {
+        return protection;
+    }
+    
     public int getHandSize() {
         return hand.size();
+    }
+    
+    public int getTotalDiscardValue() {
+        return discarded.stream().map(Card::getValue).reduce(0, Integer::sum);
     }
 
     public List<CardButton> getButtons(){
@@ -78,7 +89,8 @@ public class Player {
     public Card discardCard(int i){
         var res = hand.remove(i);
         discarded.add(res);
-        if(res.getName().equals("Princess")) eliminate();
+        if(res == GameCardTypes.Princess) eliminate();
+        protection = res == GameCardTypes.Handmaid;
         return res;
     }
 
@@ -86,6 +98,7 @@ public class Player {
         hand.remove(c);
         discarded.add(c);
         if(c == GameCardTypes.Princess) eliminate();
+        protection = c == GameCardTypes.Handmaid;
     }
 
     public Card removeCard(int i){
@@ -149,5 +162,22 @@ public class Player {
             canvas.graphics.fillRect(offsetX, offsetY, w, h);
             canvas.graphics.setColor(Color.BLACK);
         }
+    }
+    
+    public static int compare(Player a, Player b){
+    
+        int handValueA = a.getHandCard().getValue();
+        int handValueB = b.getHandCard().getValue();
+    
+        if(handValueA > handValueB) return -1;
+        if(handValueA < handValueB) return 1;
+    
+        int discardValueA = a.getTotalDiscardValue();
+        int discardValueB = b.getTotalDiscardValue();
+    
+        if(discardValueA > discardValueB) return -1;
+        if(discardValueA < discardValueB) return 1;
+    
+        return 0;
     }
 }

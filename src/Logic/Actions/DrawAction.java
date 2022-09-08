@@ -16,6 +16,6 @@ public class DrawAction extends Action {
 
     @Override
     public void onStart() {
-        game.drawCard(game.getCurrentPlayer(), numCardsToDraw);
+        game.drawCards(game.getCurrentPlayer(), numCardsToDraw);
     }
 }
