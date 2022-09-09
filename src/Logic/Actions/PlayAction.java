@@ -51,7 +51,7 @@ public class PlayAction extends Action {
         }
 
         new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 40).drawText(
-                canvas.width / 2, 40, Painter.ALIGN_CENTER_H, game.getCurrentPlayer().getName() + "'s turn."
+                canvas.width / 2, 40, Painter.ALIGN_CENTER_H, game.getCurrentPlayer() + "'s turn."
         );
 
         game.getCurrentPlayer().displayHand(canvas, btns);

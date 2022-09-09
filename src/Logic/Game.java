@@ -108,4 +108,9 @@ public class Game {
     public int getNumPlayers() {
         return numPlayers;
     }
+    
+    public void log(String s){
+        turnLog.add(s);
+        System.out.println(s);
+    }
 }

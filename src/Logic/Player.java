@@ -45,6 +45,10 @@ public class Player {
     public String getName() {
         return name;
     }
+    
+    public String toString(){
+        return name;
+    }
 
     public boolean isEliminated() {
         return eliminated;
@@ -80,6 +84,7 @@ public class Player {
     }
 
     public void eliminate() {
+        game.log(name + " was eliminated!");
         while(!hand.isEmpty()) {
             discardCard(0);
         }
@@ -93,7 +98,10 @@ public class Player {
     public Card discardCard(int i){
         var res = hand.remove(i);
         discarded.add(res);
-        if(res == GameCardTypes.Princess) eliminate();
+        if(res == GameCardTypes.Princess){
+            game.log(name + " was forced to discard PRINCESS");
+            eliminate();
+        }
         protection = res == GameCardTypes.Handmaid;
         return res;
     }
@@ -101,7 +109,10 @@ public class Player {
     public void discardCard(Card c){
         hand.remove(c);
         discarded.add(c);
-        if(c == GameCardTypes.Princess) eliminate();
+        if(c == GameCardTypes.Princess){
+            game.log(name + " was forced to discard PRINCESS");
+            eliminate();
+        }
         protection = c == GameCardTypes.Handmaid;
     }
 
@@ -179,9 +190,6 @@ public class Player {
         int discardValueA = a.getTotalDiscardValue();
         int discardValueB = b.getTotalDiscardValue();
     
-        if(discardValueA > discardValueB) return -1;
-        if(discardValueA < discardValueB) return 1;
-    
-        return 0;
+        return Integer.compare(discardValueB, discardValueA);
     }
 }

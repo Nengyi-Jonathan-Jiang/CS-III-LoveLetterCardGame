@@ -8,6 +8,7 @@ import Logic.Actions.CardSelectAction;
 import Logic.Actions.DrawAction;
 import Logic.Actions.TargetSelectAction;
 import Scheduler.Action;
+import Util.Util;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -22,6 +23,15 @@ public class GameCardTypes {
 
         @Override public String getName() { return "Spy"; }
         @Override public int getValue() { return 0; }
+        
+        public Action getAction(Game game){
+            return new Action() {
+                @Override
+                public void onFinish() {
+                    game.log(game.getCurrentPlayer() + " played SPY");
+                }
+            };
+        }
     };
 
 
@@ -52,10 +62,15 @@ public class GameCardTypes {
                         @Override
                         public void onFinish() {
                             if(selectedPlayer == null){
+                                game.log(game.getCurrentPlayer() + " played GUARD against nobody");
                                 finished = true;
                             }
                             else if(selectedPlayer.has(card)){
+                                game.log(game.getCurrentPlayer() + " played GUARD against " + selectedPlayer + ", who had a " + card.getName().toUpperCase());
                                 selectedPlayer.eliminate();
+                            }
+                            else{
+                                game.log(game.getCurrentPlayer() + " played GUARD against " + selectedPlayer + ", who did not have a " + card.getName().toUpperCase());
                             }
                         }
                     }).iterator();
@@ -67,12 +82,12 @@ public class GameCardTypes {
                 public void draw(GameCanvas canvas) {
                     if(selectedPlayer.isEliminated()){
                         new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
-                                canvas.width / 2, 30, Painter.ALIGN_CENTER_H, "You eliminated " + selectedPlayer.getName() + "!"
+                                canvas.width / 2, 30, Painter.ALIGN_CENTER_H, "You eliminated " + selectedPlayer + "!"
                         );
                     }
                     else{
                         new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
-                                canvas.width / 2, 30, Painter.ALIGN_CENTER_H, selectedPlayer.getName() + " did not have that card."
+                                canvas.width / 2, 30, Painter.ALIGN_CENTER_H, selectedPlayer + " did not have that card."
                         );
                     }
                 }
@@ -111,7 +126,11 @@ public class GameCardTypes {
                         @Override
                         public void onFinish() {
                             if(selectedPlayer == null){
+                                game.log(game.getCurrentPlayer() + " played PRIEST against nobody");
                                 finished = true;
+                            }
+                            else{
+                                game.log(game.getCurrentPlayer() + " played PRIEST against " + selectedPlayer);
                             }
                         }
                     }).iterator();
@@ -120,7 +139,7 @@ public class GameCardTypes {
                 @Override
                 public void draw(GameCanvas canvas) {
                     new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
-                            canvas.width / 2, 30, Painter.ALIGN_CENTER_H, selectedPlayer.getName() + "'s hand is"
+                            canvas.width / 2, 30, Painter.ALIGN_CENTER_H, selectedPlayer + "'s hand is"
                     );
                     int w = canvas.width / 5;
                     selectedPlayer.getHandCard().getButton().draw(canvas, canvas.width  / 2 - w / 2, 100, w);
@@ -158,13 +177,16 @@ public class GameCardTypes {
                         @Override
                         public void onFinish() {
                             if(selectedPlayer == null) {
+                                game.log(game.getCurrentPlayer() + " played BARON against nobody");
                                 finished = true;
                             }
                             else {
                                 Player a = game.getCurrentPlayer(), b = selectedPlayer;
                                 if (a.getHandCard().getValue() < b.getHandCard().getValue()) {
+                                    game.log(game.getCurrentPlayer() + " played BARON against " + selectedPlayer + ", who had the higher card");
                                     a.eliminate();
                                 } else {
+                                    game.log(game.getCurrentPlayer() + " played BARON against " + selectedPlayer + ", who had the lower card");
                                     b.eliminate();
                                 }
                             }
@@ -205,6 +227,16 @@ public class GameCardTypes {
 
         @Override public String getName() { return "Handmaid"; }
         @Override public int getValue() { return 4; }
+        
+        @Override
+        public Action getAction(Game game){
+            return new Action() {
+                @Override
+                public void onFinish() {
+                    game.log(game.getCurrentPlayer() + " played HANDMAID");
+                }
+            };
+        }
     };
 
     public static final Card Prince = new Card() {
@@ -219,7 +251,7 @@ public class GameCardTypes {
 
                 @Override
                 public Iterator<? extends Action> getPreActions() {
-                    return Collections.singletonList(new TargetSelectAction(
+                    return List.of(new TargetSelectAction(
                             game.getActivePlayers(),
                             (Player player) -> selectedPlayer = player
                     )).iterator();

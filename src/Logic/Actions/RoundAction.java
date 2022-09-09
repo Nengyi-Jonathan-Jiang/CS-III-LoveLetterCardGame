@@ -42,7 +42,7 @@ public class RoundAction extends Action {
                 // Add base affection
                 if(game.getActivePlayers().size() == 1){
                     game.getActivePlayers().get(0).addAffection();
-                    System.out.println(game.getActivePlayers().get(0).getName() + " got 1 affection point (survival)");
+                    System.out.println(game.getActivePlayers().get(0) + " got 1 affection point (survival)");
                 }
                 else{
                     List<Player> affected = new ArrayList<>();
@@ -63,7 +63,7 @@ public class RoundAction extends Action {
                     affected.forEach(Player::addAffection);
 
                     for(var i : affected){
-                        System.out.println(i.getName() + " got 1 affection point (points)");
+                        System.out.println(i + " got 1 affection point (points)");
                     }
                 }
                 // Add spy affection
@@ -75,7 +75,7 @@ public class RoundAction extends Action {
                 }
                 if(hasSpy.size() == 1){
                     hasSpy.get(0).addAffection();
-                    System.out.println(hasSpy.get(0).getName() + " got 1 affection point (spy)");
+                    System.out.println(hasSpy.get(0) + " got 1 affection point (spy)");
                 }
             }
         }).iterator());
@@ -95,7 +95,7 @@ public class RoundAction extends Action {
             
             Painter paint = new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 20);
             paint.drawText(40, 60 + i * 50, name);
-            paint.drawText(canvas.width - 40,  60 + i * 50, Painter.ALIGN_RIGHT , "" + p.getAffection());
+            paint.drawText(canvas.width - 40,  60 + i * 50, Painter.ALIGN_RIGHT , "" + affection);
         }
     }
 
