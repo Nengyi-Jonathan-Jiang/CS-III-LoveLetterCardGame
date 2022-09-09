@@ -34,8 +34,8 @@ public class Player {
     public void startRound(){
         hand.clear();
         discarded.clear();
-        affection = 0;
         protection = false;
+        eliminated = false;
     }
 
     public int getAffection(){
@@ -73,6 +73,10 @@ public class Player {
 
     public boolean has(Card card){
         return hand.stream().anyMatch(c -> c.getName().equals(card.getName()));
+    }
+
+    public boolean hasDiscarded(Card card){
+        return discarded.stream().anyMatch(c -> c.getName().equals(card.getName()));
     }
 
     public void eliminate() {

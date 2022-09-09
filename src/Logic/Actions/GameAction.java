@@ -5,10 +5,8 @@ import Graphics.Painter;
 import Logic.Game;
 import Logic.Player;
 import Scheduler.Action;
-import Util.Util;
 
 import java.awt.*;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 

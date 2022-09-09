@@ -4,6 +4,7 @@ import Graphics.GameCanvas;
 
 import java.awt.event.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 
 public abstract class Action {
@@ -23,5 +24,9 @@ public abstract class Action {
                 return Arrays.stream(actions).iterator();
             }
         };
+    }
+
+    public final Iterator<Action> iterate(){
+        return Collections.singletonList(this).iterator();
     }
 }

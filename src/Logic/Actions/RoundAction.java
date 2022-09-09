@@ -9,6 +9,8 @@ import Scheduler.Action;
 import Util.Util;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +29,7 @@ public class RoundAction extends Action {
         return Util.concatIterators(new Iterator<TurnAction>() {
             @Override
             public boolean hasNext() {
-                return !game.isDeckEmpty() && game.getAllPlayers().stream().filter(player->!player.isEliminated()).count() >= 2;
+                return !game.isDeckEmpty() && game.getAllPlayers().stream().filter(player->!player.isEliminated()).count() > 1;
             }
 
             @Override
@@ -40,6 +42,7 @@ public class RoundAction extends Action {
                 // Add base affection
                 if(game.getActivePlayers().size() == 1){
                     game.getActivePlayers().get(0).addAffection();
+                    System.out.println(game.getActivePlayers().get(0).getName() + " got 1 affection point (survival)");
                 }
                 else{
                     List<Player> affected = new ArrayList<>();
@@ -58,16 +61,21 @@ public class RoundAction extends Action {
                         }
                     }
                     affected.forEach(Player::addAffection);
+
+                    for(var i : affected){
+                        System.out.println(i.getName() + " got 1 affection point (points)");
+                    }
                 }
                 // Add spy affection
                 List<Player> hasSpy = new ArrayList<>();
                 for(Player p : game.getAllPlayers()){
-                    if(p.has(GameCardTypes.Spy)){
+                    if(p.hasDiscarded(GameCardTypes.Spy)){
                         hasSpy.add(p);
                     }
                 }
                 if(hasSpy.size() == 1){
                     hasSpy.get(0).addAffection();
+                    System.out.println(hasSpy.get(0).getName() + " got 1 affection point (spy)");
                 }
             }
         }).iterator());
@@ -91,20 +99,31 @@ public class RoundAction extends Action {
         }
     }
 
-    private double time = 0;
+    private boolean finished = false;
 
     @Override
-    public void update() {
-        time += 0.016;
+    public void processEvents(MouseEvent me, KeyEvent ke) {
+        if(me != null){
+            finished = true;
+        }
     }
 
     @Override
     public boolean isFinished() {
-        return time >= 5;
+        return finished;
+    }
+
+    @Override
+    public void onStart() {
+        System.out.println("Start round");
+
+        game.nextRound();
+
+        System.out.println(game.getActivePlayers().size());
     }
 
     @Override
     public void onFinish() {
-        game.nextRound();
+        System.out.println("End round");
     }
 }

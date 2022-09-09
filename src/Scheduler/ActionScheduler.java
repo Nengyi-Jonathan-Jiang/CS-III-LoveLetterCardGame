@@ -101,12 +101,11 @@ public class ActionScheduler {
 
         a.onStart();
 
-        Iterator<? extends Action> subActions = a.getPreActions();
-        if(subActions != null && subActions.hasNext()){   //This action is not a leaf action
-            scheduleStack.push(subActions);
-            scheduleAction(subActions.next());
+        Iterator<? extends Action> preActions = a.getPreActions();
+        if(preActions != null && preActions.hasNext()) {
+            scheduleStack.push(preActions);
+            scheduleAction(preActions.next());
         }
-        // Otherwise do nothing, the loop will take care of everything
     }
 
     private void scheduleNextAction(){

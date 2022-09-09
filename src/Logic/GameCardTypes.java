@@ -43,10 +43,18 @@ public class GameCardTypes {
                     ), new CardSelectAction(
                             GameCardTypes.getAll().stream().filter(i -> !i.getName().equals("Guard")).collect(Collectors.toList()),
                             card -> this.card = card
-                    ), new Action() {
+                    ){
+                        @Override
+                        public boolean isFinished() {
+                            return selectedPlayer == null || super.isFinished();
+                        }
+                    }, new Action() {
                         @Override
                         public void onFinish() {
-                            if(selectedPlayer.has(card)){
+                            if(selectedPlayer == null){
+                                finished = true;
+                            }
+                            else if(selectedPlayer.has(card)){
                                 selectedPlayer.eliminate();
                             }
                         }
@@ -96,10 +104,17 @@ public class GameCardTypes {
 
                 @Override
                 public Iterator<? extends Action> getPreActions() {
-                    return Collections.singletonList(new TargetSelectAction(
+                    return List.of(new TargetSelectAction(
                             game.getOtherActivePlayers(),
                             (Player player) -> selectedPlayer = player
-                    )).iterator();
+                    ), new Action(){
+                        @Override
+                        public void onFinish() {
+                            if(selectedPlayer == null){
+                                finished = true;
+                            }
+                        }
+                    }).iterator();
                 }
 
                 @Override
@@ -142,12 +157,16 @@ public class GameCardTypes {
                     ), new Action(){
                         @Override
                         public void onFinish() {
-                            Player a = game.getCurrentPlayer(), b = selectedPlayer;
-                            if(a.getHandCard().getValue() < b.getHandCard().getValue()){
-                                a.eliminate();
+                            if(selectedPlayer == null) {
+                                finished = true;
                             }
-                            else{
-                                b.eliminate();
+                            else {
+                                Player a = game.getCurrentPlayer(), b = selectedPlayer;
+                                if (a.getHandCard().getValue() < b.getHandCard().getValue()) {
+                                    a.eliminate();
+                                } else {
+                                    b.eliminate();
+                                }
                             }
                         }
                     }).iterator();
@@ -208,8 +227,10 @@ public class GameCardTypes {
 
                 @Override
                 public void onFinish() {
-                    selectedPlayer.discardCard(0);
-                    game.drawCard(selectedPlayer);
+                    if(selectedPlayer != null) {
+                        selectedPlayer.discardCard(0);
+                        game.drawCard(selectedPlayer);
+                    }
                 }
             };
         }
@@ -289,6 +310,7 @@ public class GameCardTypes {
                     ), new Action(){
                         @Override
                         public void onFinish() {
+                            if(selectedPlayer == null) return;
                             Card c = selectedPlayer.removeCard(0);
                             selectedPlayer.addToHand(game.getCurrentPlayer().removeCard(0));
                             game.getCurrentPlayer().addToHand(c);

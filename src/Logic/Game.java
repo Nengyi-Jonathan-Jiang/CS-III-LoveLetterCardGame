@@ -22,9 +22,12 @@ public class Game {
     }
     
     public void nextRound(){
-    
+
+        System.out.println("Started next round");
+
         players.forEach(Player::startRound);
-    
+
+        deck.clear();
         for (Card c : new Card[]{
             GameCardTypes.Baron,
             GameCardTypes.Princess,
