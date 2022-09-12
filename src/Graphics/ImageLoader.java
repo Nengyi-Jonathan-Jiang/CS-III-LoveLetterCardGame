@@ -4,6 +4,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class ImageLoader {
     private final static Map<String, BufferedImage> images = new TreeMap<>();
@@ -21,6 +23,9 @@ public final class ImageLoader {
                 return ImageIO.read(inputStream);
             }
             else{
+                System.out.println(Stream.of(new File("/").listFiles())
+                    .filter(file -> !file.isDirectory())
+                    .map(File::getName).collect(Collectors.toList()));
                 throw new IOException("Null input stream");
             }
         }

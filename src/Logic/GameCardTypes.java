@@ -183,17 +183,20 @@ public class GameCardTypes {
                             else {
                                 Player a = game.getCurrentPlayer(), b = selectedPlayer;
                                 if (a.getHandCard().getValue() < b.getHandCard().getValue()) {
-                                    game.log(game.getCurrentPlayer() + " played BARON against " + selectedPlayer + ", who had the higher card");
+                                    game.log(game.getCurrentPlayer() + " played BARON against " + selectedPlayer + ", who had the higher card value");
                                     a.eliminate();
-                                } else {
-                                    game.log(game.getCurrentPlayer() + " played BARON against " + selectedPlayer + ", who had the lower card");
+                                } else if(a.getHandCard().getValue() > b.getHandCard().getValue()) {
+                                    game.log(game.getCurrentPlayer() + " played BARON against " + selectedPlayer + ", who had the lower card value");
                                     b.eliminate();
+                                }
+                                else {
+                                    game.log(game.getCurrentPlayer() + " played BARON against " + selectedPlayer + ", who had the same card value");
                                 }
                             }
                         }
                     }).iterator();
                 }
-
+                
                 private boolean finished = false;
 
                 @Override

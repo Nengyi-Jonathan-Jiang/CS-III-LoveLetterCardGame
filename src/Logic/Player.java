@@ -74,6 +74,10 @@ public class Player {
         if(hand.size() > 0) return hand.get(0);
         throw new Error("Error: empty hand (" + name + ")");
     }
+    
+    public Card getHandCard(int i){
+        return hand.get(i);
+    }
 
     public boolean has(Card card){
         return hand.stream().anyMatch(c -> c.getName().equals(card.getName()));
@@ -142,8 +146,8 @@ public class Player {
 
     public void displaySide(GameCanvas canvas){
         Font font = game.getCurrentIndex() == index
-                ? new Font("Times New Roman", Font.PLAIN, 20)
-                : new Font("Times New Roman", Font.BOLD, 20);
+                ? new Font("Times New Roman", Font.BOLD, 20)
+                : new Font("Times New Roman", Font.PLAIN, 20);
         String name = game.getCurrentIndex() == index
                 ? this.name + "(You)"
                 : this.name;

@@ -66,8 +66,10 @@ public class PlayAction extends Action {
         if(me != null) {
             for (int i = 0; i < btns.size(); i++) {
                 if (btns.get(i).clicked(me)) {
-                    postAction = game.getCurrentPlayer().discardCard(i).getAction(game);
-                    finished = true;
+                    if(game.getCurrentPlayer().getHandCard(i) != GameCardTypes.Princess) {
+                        postAction = game.getCurrentPlayer().discardCard(i).getAction(game);
+                        finished = true;
+                    }
                 }
             }
         }

@@ -28,29 +28,22 @@ public class Game {
         players.forEach(Player::startRound);
 
         deck.clear();
-        for (Card c : new Card[]{
-            GameCardTypes.Baron,
+        
+        List<Card> cardOrder = new ArrayList<>(List.of(
             GameCardTypes.Princess,
-            GameCardTypes.Spy,
-            GameCardTypes.Chancellor,
-            GameCardTypes.Guard,
-            GameCardTypes.King,
-            GameCardTypes.Prince,
-            GameCardTypes.Handmaid,
             GameCardTypes.Countess,
-            GameCardTypes.Priest,
-            GameCardTypes.Guard,
-            GameCardTypes.Guard,
-            GameCardTypes.Prince,
-            GameCardTypes.Guard,
-            GameCardTypes.Priest,
-            GameCardTypes.Handmaid,
-            GameCardTypes.Guard,
-            GameCardTypes.Spy,
-            GameCardTypes.Baron,
-            GameCardTypes.Chancellor,
-            GameCardTypes.Guard,
-        }) deck.addLast(c);
+            GameCardTypes.King,
+            GameCardTypes.Chancellor, GameCardTypes.Chancellor,
+            GameCardTypes.Prince, GameCardTypes.Prince,
+            GameCardTypes.Handmaid, GameCardTypes.Handmaid,
+            GameCardTypes.Baron, GameCardTypes.Baron,
+            GameCardTypes.Priest, GameCardTypes.Priest,
+            GameCardTypes.Guard, GameCardTypes.Guard, GameCardTypes.Guard, GameCardTypes.Guard, GameCardTypes.Guard, GameCardTypes.Guard,
+            GameCardTypes.Spy, GameCardTypes.Spy
+        ));
+        Collections.shuffle(cardOrder);
+        
+        for (Card c : cardOrder) deck.addLast(c);
         
         players.forEach(this::drawCard);
     

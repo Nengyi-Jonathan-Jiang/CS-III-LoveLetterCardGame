@@ -11,7 +11,7 @@ import Scheduler.ActionScheduler;
 public class App extends JFrame {
     public App(){
         super();
-        setTitle("L Letter Cards");
+        setTitle("Love Letter Cards");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(new Dimension(1600, 1000));
 //        setResizable(false);
@@ -40,7 +40,5 @@ public class App extends JFrame {
 
         setVisible(true);
     }
-    public static void main(String[] args){
-        App app = new App();
-    }
+    public static void main(String[] args){ new App(); }
 }
