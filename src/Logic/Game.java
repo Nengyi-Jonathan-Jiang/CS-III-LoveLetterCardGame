@@ -13,16 +13,18 @@ public class Game {
     public final int numCards = 21;
 
     private List<String> turnLog = new ArrayList<>();
+    
+    private int startingPlayer = 0;
 
     public void initializePlayers(List<String> playerNames){
         players = IntStream.range(0, playerNames.size()).mapToObj(i->new Player(playerNames.get(i), this, i)).collect(Collectors.toList());
         numPlayers = players.size();
         
+        startingPlayer = (int)(Math.random() * players.size());
         nextRound();
     }
     
     public void nextRound(){
-
         System.out.println("Started next round");
 
         players.forEach(Player::startRound);
@@ -47,15 +49,23 @@ public class Game {
         
         players.forEach(this::drawCard);
     
-        currentPlayer = 0;
+        currentPlayer = startingPlayer;
     }
 
+    public void setStartingPlayer(int p){
+        startingPlayer = p;
+    }
+    
     public void returnCardToDeck(Card c) {
         deck.addLast(c);
     }
 
     public boolean isDeckEmpty() {
         return deck.size() <= 1;
+    }
+    
+    public int getDeckSize(){
+        return deck.size();
     }
 
     public void drawCard(Player player) {

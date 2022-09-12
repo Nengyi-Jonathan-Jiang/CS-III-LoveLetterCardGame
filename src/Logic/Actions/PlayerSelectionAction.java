@@ -49,7 +49,7 @@ public class PlayerSelectionAction extends Action {
 
     @Override
     public Iterator<? extends Action> getPostActions() {
-        return interrupted ? null : List.of(new LoadingAction(), new GameAction(game)).iterator();
+        return interrupted ? null : Collections.singleton(new GameAction(game)).iterator();
     }
 
     @Override

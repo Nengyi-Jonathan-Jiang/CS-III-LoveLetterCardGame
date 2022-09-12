@@ -4,7 +4,9 @@ import java.util.Iterator;
 
 import Graphics.GameCanvas;
 import Logic.Actions.MenuAction;
+import Logic.Card;
 import Logic.Game;
+import Logic.GameCardTypes;
 import Scheduler.Action;
 import Scheduler.ActionScheduler;
 
@@ -16,6 +18,9 @@ public class App extends JFrame {
         setSize(new Dimension(1600, 1000));
 //        setResizable(false);
 
+        //Preload the images
+        GameCardTypes.getAll().forEach(Card::getButton);
+        
         GameCanvas canvas = new GameCanvas();
         Game game = new Game();
 

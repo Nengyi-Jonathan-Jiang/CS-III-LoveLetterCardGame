@@ -18,14 +18,11 @@ public final class ImageLoader {
         images.put(name, load(filename));
     }
     public static BufferedImage load(String filename){
-        try (InputStream inputStream = ImageLoader.class.getResourceAsStream("../" + filename)) {
+        try (InputStream inputStream = ImageLoader.class.getResourceAsStream("/" + filename)) {
             if(inputStream != null) {
                 return ImageIO.read(inputStream);
             }
             else{
-                System.out.println(Stream.of(new File("/").listFiles())
-                    .filter(file -> !file.isDirectory())
-                    .map(File::getName).collect(Collectors.toList()));
                 throw new IOException("Null input stream");
             }
         }

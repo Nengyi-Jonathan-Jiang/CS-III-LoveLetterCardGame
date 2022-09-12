@@ -11,6 +11,11 @@ import java.awt.event.MouseEvent;
 import java.security.Key;
 import java.util.*;
 
+/**
+ * A class that runs an {@link Action} in an event loop. An action may schedule <i>pre-actions</i> to be run
+ * before the action executes and <i>post-actions</i> to be run after the action executes. Post-actions are queried
+ * after the action finishes execution.
+ */
 public class ActionScheduler {
 
     public static void run(Action a, GameCanvas component){run(a, component, 16);}

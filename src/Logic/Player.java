@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class Player {
     private final Game game;
     private final String name;
-    private final int index;
+    public final int index;
 
     private final List<Card> hand;
     private final List<Card> discarded;
