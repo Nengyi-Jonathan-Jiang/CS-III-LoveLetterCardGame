@@ -3,12 +3,10 @@ package Scheduler;
 import Graphics.GameCanvas;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.security.Key;
 import java.util.*;
 
 /**
@@ -84,7 +82,7 @@ public class ActionScheduler {
                         });
                     }
                     else {
-                        // No more actions to execute, quit the game
+                        // No more actions to execute, quit the event loop
                         if (scheduleStack.isEmpty()) break;
                             // Get the next action
                         else scheduleNextAction();
@@ -114,7 +112,7 @@ public class ActionScheduler {
     }
 
     private void scheduleNextAction(){
-        if(scheduleStack.isEmpty()) throw new Error("Pop off schedule stack when empty");   //hopefully never happens
+        if(scheduleStack.isEmpty() || actionStack.isEmpty()) throw new Error("Pop off schedule stack when empty");   //hopefully never happens
 
         Iterator<? extends Action> schedule = scheduleStack.peekFirst();
 
@@ -122,7 +120,11 @@ public class ActionScheduler {
             Action nextAction = schedule.next();
             scheduleAction(nextAction);
         }
-        else scheduleStack.pop();
+        else{
+            scheduleStack.pop();
+            //noinspection ConstantConditions
+            actionStack.peekFirst().onExecute();
+        }
     }
 
     private void executeAction(Action action){

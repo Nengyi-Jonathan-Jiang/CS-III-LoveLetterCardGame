@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Painter {
     private Graphics2D graphics;
-    private double scale = 1.0;
+    private final double scale = 1.0;
 
     public static int ALIGN_CENTER_H = 1;
     public static int ALIGN_CENTER_V = 2;

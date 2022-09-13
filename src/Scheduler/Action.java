@@ -4,7 +4,6 @@ import Graphics.GameCanvas;
 
 import java.awt.event.*;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -42,11 +41,32 @@ public abstract class Action {
      * @param canvas The {@link GameCanvas} on which to draw things
      */
     public void draw(GameCanvas canvas){}
+
+    /**
+     * Called as soon as the Action is scheduled. Any initialization up not done in the constructor should happen here.
+     */
     public void onStart(){}
+
+    /**
+     * Called when all of the pre-actions are finished executing
+     */
     public void onExecute(){}
+
+    /**
+     * Called as soon as the Action finishes executing
+     */
     public void onFinish(){}
+
+    /**
+     * @return Whether the Action has finished executing
+     */
     public boolean isFinished(){return true;}
 
+    /**
+     * Chains together multiple Actions
+     * @param actions Action to chain together
+     * @return A single Action formed by chaining together the actions passed in
+     */
     public static Action chain(Action... actions){
         return new Action() {
             @Override
@@ -54,9 +74,5 @@ public abstract class Action {
                 return Arrays.stream(actions).iterator();
             }
         };
-    }
-
-    public final Iterator<Action> iterate(){
-        return Collections.singletonList(this).iterator();
     }
 }

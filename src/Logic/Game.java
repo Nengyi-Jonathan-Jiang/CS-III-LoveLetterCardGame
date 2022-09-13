@@ -12,7 +12,7 @@ public class Game {
 
     public final int numCards = 21;
 
-    private List<String> turnLog = new ArrayList<>();
+    private final List<String> turnLog = new ArrayList<>();
     
     private int startingPlayer = 0;
 
