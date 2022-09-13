@@ -55,7 +55,11 @@ public class PlayAction extends Action {
         );
 
         game.getCurrentPlayer().displayHand(canvas, btns);
-
+    
+        new Painter(canvas.graphics)
+            .setFont("Times New Roman", Font.PLAIN, 30)
+            .drawText(canvas.width / 2, canvas.height - 60, Painter.ALIGN_CENTER_H | Painter.ALIGN_BOTTOM, "Pick a card to play (discard)");
+        
         new Painter(canvas.graphics)
             .setFont("Times New Roman", Font.PLAIN, 30)
             .drawText(canvas.width / 2, canvas.height - 20, Painter.ALIGN_CENTER_H | Painter.ALIGN_BOTTOM, "Remaining cards in deck: " + (game.getDeckSize() - 1));

@@ -2,10 +2,13 @@ package Graphics.Buttons;
 
 import Graphics.GameCanvas;
 import Graphics.Painter;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
+/**
+ * A Button that has text on it. TextButtons may contain multiple lines of text. Text is centered vertically and
+ * horizontally in the button
+ */
 public class TextButton extends Button{
     private String[] text;
     private int fontSize = -1;
@@ -23,7 +26,8 @@ public class TextButton extends Button{
     }
     public String[] getText(){return text;}
 
-    public void draw(@NotNull GameCanvas canvas){
+    @Override
+    public void draw(GameCanvas canvas){
         canvas.graphics.drawRect(x, y, width, height);
         new Painter(canvas.graphics)
                 .setFont("Times New Roman", Font.PLAIN, fontSize == -1 ? height : fontSize)

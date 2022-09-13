@@ -7,6 +7,8 @@ import Logic.Player;
 import Scheduler.Action;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 
@@ -22,7 +24,7 @@ public class GameAction extends Action {
         return new Iterator<>() {
             @Override
             public boolean hasNext() {
-                return true;
+                return game.getAllPlayers().stream().noneMatch(p -> p.getAffection() >= 5);
             }
 
             @Override
@@ -35,19 +37,21 @@ public class GameAction extends Action {
     @Override
     public void draw(GameCanvas canvas) {
         new Painter(canvas.graphics).setFont("Times New Roman", Font.BOLD, 40).drawText(canvas.width / 2, 20, Painter.ALIGN_CENTER_H,
-            "Game over. " + game.getActivePlayers().stream().map(Player::getName).collect(Collectors.toList())
+            "Game over. " + game.getAllPlayers().stream().filter(p -> p.getAffection() >= 5).map(Player::getName).collect(Collectors.joining(" and ")) + " won the game."
         );
     }
 
-    private double time = 0;
-
+    private boolean finished = false;
+    
     @Override
-    public void update() {
-        time += 0.016;
+    public void processEvents(MouseEvent me, KeyEvent ke) {
+        if(me != null){
+            finished = true;
+        }
     }
-
+    
     @Override
     public boolean isFinished() {
-        return time >= 5;
+        return finished;
     }
 }

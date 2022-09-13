@@ -1,16 +1,21 @@
 package Graphics;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.function.Consumer;
 
+/**
+ * A canvas on which to draw stuff.
+ */
 public class GameCanvas extends JPanel {
     private Consumer<GameCanvas> paintFunction = null;
     public Graphics2D graphics = null;
     public int width, height;
-
+    
+    /**
+     * Repaints the canvas, calling the function supplied
+     * @param function The function to call to paint the canvas
+     */
     public void repaint(Consumer<GameCanvas> function) {
         paintFunction = function;
         super.repaint();

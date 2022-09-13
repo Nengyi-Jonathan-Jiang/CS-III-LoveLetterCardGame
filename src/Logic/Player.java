@@ -119,6 +119,21 @@ public class Player {
         }
         protection = c == GameCardTypes.Handmaid;
     }
+    
+    public Card princeDiscardCard(){
+        var res = hand.remove(0);
+        if(res == GameCardTypes.Handmaid){
+            discarded.add(Math.max(0, discarded.size() - 1), res);
+        }
+        else if (res == GameCardTypes.Princess) {
+            game.log(name + " was forced to discard PRINCESS");
+            eliminate();
+        }
+        else{
+            discarded.add(res);
+        }
+        return res;
+    }
 
     public Card removeCard(int i){
         return hand.remove(i);
@@ -195,5 +210,23 @@ public class Player {
         int discardValueB = b.getTotalDiscardValue();
     
         return Integer.compare(discardValueB, discardValueA);
+    }
+    
+    public static int getSideCardSize(GameCanvas c, Game g){
+        int playersPerCol = ((g.getNumPlayers() + 1) / 2);
+        double cardOffset = .25;
+        
+        int h = c.height / playersPerCol;
+        int cardHeight = (int)((h - 60) / (1 + (Math.ceil(1. * g.numCards / g.getNumPlayers()) - 1) * cardOffset));
+    
+        return cardHeight * 5 / 7;
+    }
+    
+    public static int getHandCardSize(GameCanvas c, Game g){
+        double cardOffset = .25;
+        int m = (int)((c.height / ((g.getNumPlayers() + 1) / 2) - 60) / (1 + (Math.ceil(1. * g.numCards / g.getNumPlayers()) - 1) * cardOffset) * 5 / 7 + 40);
+    
+        int width = (c.width - 2 * m);
+        return Math.min(300, width / 3 - 20);
     }
 }

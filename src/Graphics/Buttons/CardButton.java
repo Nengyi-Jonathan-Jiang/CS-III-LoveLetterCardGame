@@ -3,11 +3,21 @@ package Graphics.Buttons;
 import Logic.Card;
 import Graphics.GameCanvas;
 
+/**
+ * A Button representing a card in the game
+ */
 public class CardButton extends ImageButton {
     public CardButton(Card card){
         super(card.getName());
     }
-
+    
+    /**
+     * Draws the CardButton at the specified position
+     * @param canvas The GameCanvas on which to draw the CardButton
+     * @param x The x-coordinate of the button (screen space)
+     * @param y The y-coordinate of the button (screen space)
+     * @param scale The width of the card in pixels
+     */
     public void draw(GameCanvas canvas, int x, int y, int scale){
         setPos(x, y);
         setSize(scale, scale * 7 / 5);

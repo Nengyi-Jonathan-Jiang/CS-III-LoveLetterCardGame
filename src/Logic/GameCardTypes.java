@@ -4,16 +4,17 @@ import Graphics.Buttons.CardButton;
 import Graphics.Buttons.Button;
 import Graphics.GameCanvas;
 import Graphics.Painter;
+
 import Logic.Actions.CardSelectAction;
 import Logic.Actions.DrawAction;
 import Logic.Actions.TargetSelectAction;
+
 import Scheduler.Action;
-import Util.Util;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Collections;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -168,6 +169,8 @@ public class GameCardTypes {
             return new Action() {
                 private Player selectedPlayer;
 
+                private Card currPlayerCard, targetCard;
+                
                 @Override
                 public Iterator<? extends Action> getPreActions() {
                     return List.of(new TargetSelectAction(
@@ -182,10 +185,12 @@ public class GameCardTypes {
                             }
                             else {
                                 Player a = game.getCurrentPlayer(), b = selectedPlayer;
-                                if (a.getHandCard().getValue() < b.getHandCard().getValue()) {
+                                currPlayerCard = a.getHandCard();
+                                targetCard = b.getHandCard();
+                                if (currPlayerCard.getValue() < targetCard.getValue()) {
                                     game.log(game.getCurrentPlayer() + " played BARON against " + selectedPlayer + ", who had the higher card value");
                                     a.eliminate();
-                                } else if(a.getHandCard().getValue() > b.getHandCard().getValue()) {
+                                } else if(currPlayerCard.getValue() > targetCard.getValue()) {
                                     game.log(game.getCurrentPlayer() + " played BARON against " + selectedPlayer + ", who had the lower card value");
                                     b.eliminate();
                                 }
@@ -201,14 +206,31 @@ public class GameCardTypes {
 
                 @Override
                 public void draw(GameCanvas canvas) {
+                    
+                    currPlayerCard.getButton().draw(canvas, canvas.width / 2 - Player.getHandCardSize(canvas, game) - 20, 120, Player.getHandCardSize(canvas, game));
+                    targetCard.getButton().draw(canvas, canvas.width / 2 + 20, 120, Player.getHandCardSize(canvas, game));
+    
+                    new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 20).drawText(
+                        canvas.width / 2 - Player.getHandCardSize(canvas, game) / 2 - 10, 80, Painter.ALIGN_CENTER_H, "You had"
+                    );
+    
+                    new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 20).drawText(
+                        canvas.width / 2 + Player.getHandCardSize(canvas, game) / 2 + 10, 80, Painter.ALIGN_CENTER_H, selectedPlayer + " had"
+                    );
+                    
                     if(selectedPlayer.isEliminated()){
                         new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
-                                canvas.width / 2, 70, Painter.ALIGN_CENTER_H, selectedPlayer.getName() + " is out!"
+                                canvas.width / 2, 30, Painter.ALIGN_CENTER_H, selectedPlayer + " is out!"
+                        );
+                    }
+                    else if(game.getCurrentPlayer().isEliminated()){
+                        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
+                                canvas.width / 2, 30, Painter.ALIGN_CENTER_H, "You are out!"
                         );
                     }
                     else{
                         new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
-                                canvas.width / 2, 70, Painter.ALIGN_CENTER_H, "You are out!"
+                            canvas.width / 2, 30, Painter.ALIGN_CENTER_H, "You had the same card as " + selectedPlayer
                         );
                     }
                 }
@@ -263,7 +285,7 @@ public class GameCardTypes {
                 @Override
                 public void onFinish() {
                     if(selectedPlayer != null) {
-                        selectedPlayer.discardCard(0);
+                        selectedPlayer.princeDiscardCard();
                         game.drawCard(selectedPlayer);
                     }
                 }

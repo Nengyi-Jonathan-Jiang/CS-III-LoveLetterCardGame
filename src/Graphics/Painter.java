@@ -4,7 +4,6 @@ import java.awt.*;
 
 public class Painter {
     private Graphics2D graphics;
-    private final double scale = 1.0;
 
     public static int ALIGN_CENTER_H = 1;
     public static int ALIGN_CENTER_V = 2;
@@ -67,7 +66,7 @@ public class Painter {
     }
 
     public double getFontSize() {
-        return graphics.getFont().getSize() / scale;
+        return graphics.getFont().getSize();
     }
 
     public String getFontName() {
