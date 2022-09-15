@@ -49,8 +49,8 @@ public final class ImageLoader {
             }
         }
         catch(Exception e){
-            System.out.println("Could not load file \"" + filename + "\"");
             e.printStackTrace();
+            System.out.println("Could not load file \"" + filename + "\"");
         }
         return null;
     }

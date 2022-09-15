@@ -19,17 +19,17 @@ public class ActionScheduler {
     public static void run(Action a, GameCanvas component){run(a, component, 16);}
     public static void run(Action a, GameCanvas component, int delay){new ActionScheduler(a, delay, component);}
 
-    private final Deque<Iterator<? extends Action>> scheduleStack;
-    private final Deque<Action> actionStack;
+    protected final Deque<Iterator<? extends Action>> scheduleStack;
+    protected final Deque<Action> actionStack;
 
-    private final MouseEvent[] lastMouseEvent = new MouseEvent[1];
-    private final KeyEvent[] lastKeyEvent = new KeyEvent[1];
+    protected final MouseEvent[] lastMouseEvent = new MouseEvent[1];
+    protected final KeyEvent[] lastKeyEvent = new KeyEvent[1];
 
-    private final GameCanvas canvas;
+    protected final GameCanvas canvas;
 
-    private final int delay;
+    protected final int delay;
 
-    private ActionScheduler(Action a, int delay, GameCanvas canvas){
+    protected ActionScheduler(Action a, int delay, GameCanvas canvas){
         actionStack = new ArrayDeque<>();
         scheduleStack = new ArrayDeque<>();
 
@@ -60,7 +60,7 @@ public class ActionScheduler {
         run();
     }
 
-    private void run(){
+    protected void run(){
         new Thread(() -> {
             while(true){
                 if(actionStack.isEmpty()) break;
@@ -98,7 +98,7 @@ public class ActionScheduler {
         }).start();
     }
 
-    private void scheduleAction(Action a){
+    protected void scheduleAction(Action a){
 
         actionStack.push(a);
 
@@ -111,7 +111,7 @@ public class ActionScheduler {
         }
     }
 
-    private void scheduleNextAction(){
+    protected void scheduleNextAction(){
         if(scheduleStack.isEmpty() || actionStack.isEmpty()) throw new Error("Pop off schedule stack when empty");   //hopefully never happens
 
         Iterator<? extends Action> schedule = scheduleStack.peekFirst();
@@ -127,7 +127,7 @@ public class ActionScheduler {
         }
     }
 
-    private void executeAction(Action action){
+    protected void executeAction(Action action){
         canvas.repaint(action::draw);
         action.processEvents(lastMouseEvent[0], lastKeyEvent[0]);
         lastMouseEvent[0] = null;

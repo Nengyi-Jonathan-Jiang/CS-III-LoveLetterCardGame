@@ -43,7 +43,7 @@ public class PlayAction extends Action {
 
     @Override
     public void draw(GameCanvas canvas) {
-
+        
         List<Player> players = game.getAllPlayers();
 
         for (Player player : players) {
@@ -85,5 +85,7 @@ public class PlayAction extends Action {
     }
 
     @Override
-    public boolean isFinished() { return finished; }
+    public boolean isFinished() {
+        return finished;
+    }
 }

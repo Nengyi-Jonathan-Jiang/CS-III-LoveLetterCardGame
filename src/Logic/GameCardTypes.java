@@ -285,6 +285,7 @@ public class GameCardTypes {
                 @Override
                 public void onFinish() {
                     if(selectedPlayer != null) {
+                        game.log(game.getCurrentPlayer() + " played PRINCE against " + selectedPlayer);
                         selectedPlayer.princeDiscardCard();
                         game.drawCard(selectedPlayer);
                     }
@@ -316,7 +317,12 @@ public class GameCardTypes {
                             game, 2
                     )).iterator();
                 }
-
+    
+                @Override
+                public void onStart() {
+                    game.log(game.getCurrentPlayer() + " played CHANCELLOR");
+                }
+    
                 @Override
                 public void draw(GameCanvas canvas) {
                     new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 40).drawText(
@@ -367,7 +373,11 @@ public class GameCardTypes {
                     ), new Action(){
                         @Override
                         public void onFinish() {
-                            if(selectedPlayer == null) return;
+                            if(selectedPlayer == null){
+                                game.log(game.getCurrentPlayer() + " played KING against nobody");
+                                return;
+                            }
+                            game.log(game.getCurrentPlayer() + " played KING against " + selectedPlayer);
                             Card c = selectedPlayer.removeCard(0);
                             selectedPlayer.addToHand(game.getCurrentPlayer().removeCard(0));
                             game.getCurrentPlayer().addToHand(c);
@@ -393,7 +403,13 @@ public class GameCardTypes {
                     if(
                         game.getCurrentPlayer().getHandCard().getName().equals("Prince")
                         || game.getCurrentPlayer().getHandCard().getName().equals("King")
-                    ) finished = false;
+                    ){
+                        game.log(game.getCurrentPlayer() + " was forced to play COUNTESS");
+                        finished = false;
+                    }
+                    else{
+                        game.log(game.getCurrentPlayer() + " played COUNTESS");
+                    }
                 }
 
                 @Override
@@ -415,28 +431,33 @@ public class GameCardTypes {
             };
         }
     };
-
+    
     public static final Card Princess = new Card() {
-
+        
         @Override public String getName() { return "Princess"; }
         @Override public int getValue() { return 9; }
-
+        
         public Action getAction(Game game) {
             return new Action() {
                 private boolean finished = false;
-
+    
+                @Override
+                public void onStart() {
+                    game.log(game.getCurrentPlayer() + " was forced to discard PRINCESS");
+                }
+    
                 @Override
                 public void draw(GameCanvas canvas) {
                     new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 30).drawText(
-                            canvas.width / 2, 30, Painter.ALIGN_CENTER_H, "You played the Princess! You are out!"
+                        canvas.width / 2, 30, Painter.ALIGN_CENTER_H, "You played the Princess! You are out!"
                     );
                 }
-
+                
                 @Override
                 public void processEvents(MouseEvent me, KeyEvent ke) {
                     if(me != null) finished = true;
                 }
-
+                
                 @Override
                 public boolean isFinished() {
                     return finished;
@@ -444,7 +465,7 @@ public class GameCardTypes {
             };
         }
     };
-
+    
     public static List<Card> getAll(){
         return List.of(Spy, Guard, Priest, Baron, Handmaid, Prince, Chancellor, King, Countess, Princess);
     }

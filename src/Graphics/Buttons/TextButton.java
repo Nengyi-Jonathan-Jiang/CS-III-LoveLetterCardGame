@@ -28,10 +28,14 @@ public class TextButton extends Button{
 
     @Override
     public void draw(GameCanvas canvas){
+        canvas.graphics.setColor(new Color(255, 250, 250));
+        canvas.graphics.fillRect(x, y, width, height);
+        canvas.graphics.setColor(new Color(255, 150, 150));
         canvas.graphics.drawRect(x, y, width, height);
+        canvas.graphics.setColor(Color.BLACK);
         new Painter(canvas.graphics)
-                .setFont("Times New Roman", Font.PLAIN, fontSize == -1 ? height : fontSize)
-                .drawText(x + width / 2, y + height / 2, Painter.ALIGN_CENTER_H | Painter.ALIGN_CENTER_V, text);
-
+            .setFont("Times New Roman", Font.PLAIN, fontSize == -1 ? height : fontSize)
+            .drawText(x + width / 2, y + height / 2, Painter.ALIGN_CENTER_H | Painter.ALIGN_CENTER_V, text);
+    
     }
 }

@@ -102,10 +102,6 @@ public class Player {
     public Card discardCard(int i){
         var res = hand.remove(i);
         discarded.add(res);
-        if(res == GameCardTypes.Princess){
-            game.log(name + " was forced to discard PRINCESS");
-            eliminate();
-        }
         protection = res == GameCardTypes.Handmaid;
         return res;
     }
@@ -113,10 +109,6 @@ public class Player {
     public void discardCard(Card c){
         hand.remove(c);
         discarded.add(c);
-        if(c == GameCardTypes.Princess){
-            game.log(name + " was forced to discard PRINCESS");
-            eliminate();
-        }
         protection = c == GameCardTypes.Handmaid;
     }
     
@@ -127,6 +119,7 @@ public class Player {
         }
         else if (res == GameCardTypes.Princess) {
             game.log(name + " was forced to discard PRINCESS");
+            discarded.add(res);
             eliminate();
         }
         else{
@@ -134,7 +127,7 @@ public class Player {
         }
         return res;
     }
-
+    
     public Card removeCard(int i){
         return hand.remove(i);
     }

@@ -7,6 +7,7 @@ import Logic.Actions.MenuAction;
 import Logic.Card;
 import Logic.Game;
 import Logic.GameCardTypes;
+import Logic.LoveLetterActionScheduler;
 import Scheduler.Action;
 import Scheduler.ActionScheduler;
 
@@ -16,7 +17,6 @@ public class App extends JFrame {
         setTitle("Love Letter Cards");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(new Dimension(1600, 1000));
-//        setResizable(false);
 
         //Preload the images
         GameCardTypes.getAll().forEach(Card::getButton);
@@ -25,8 +25,8 @@ public class App extends JFrame {
         Game game = new Game();
 
         add(canvas);
-
-        ActionScheduler.run(new Action() {
+        
+        LoveLetterActionScheduler.run(new Action() {
             @Override
             public Iterator<? extends Action> getPreActions() {
                 return new Iterator<>() {
