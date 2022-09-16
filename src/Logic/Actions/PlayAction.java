@@ -3,6 +3,7 @@ package Logic.Actions;
 import Graphics.GameCanvas;
 import Graphics.Painter;
 import Graphics.Buttons.CardButton;
+import Logic.Card;
 import Logic.Game;
 import Logic.GameCardTypes;
 import Logic.Player;
@@ -16,6 +17,17 @@ import java.util.Iterator;
 import java.util.List;
 
 public class PlayAction extends Action {
+    private static final CardButton REFERENCE_CARD = new Card(){
+        @Override
+        public String getName() {
+            return "ReferenceCard";
+        }
+        @Override
+        public int getValue() {
+            return -1;
+        }
+    }.getButton();
+    
     private final Game game;
 
     private boolean finished = false;
@@ -63,6 +75,8 @@ public class PlayAction extends Action {
         new Painter(canvas.graphics)
             .setFont("Times New Roman", Font.PLAIN, 30)
             .drawText(canvas.width / 2, canvas.height - 20, Painter.ALIGN_CENTER_H | Painter.ALIGN_BOTTOM, "Remaining cards in deck: " + (game.getDeckSize() - 1));
+        
+        REFERENCE_CARD.draw(canvas, canvas.width - Player.getSideSize(canvas, game) * 5 / 7, canvas.height - Player.getSideSize(canvas, game), Player.getSideSize(canvas, game));
     }
 
     @Override

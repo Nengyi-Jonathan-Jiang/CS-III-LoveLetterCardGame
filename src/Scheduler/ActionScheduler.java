@@ -128,7 +128,7 @@ public class ActionScheduler {
     }
 
     protected void executeAction(Action action){
-        canvas.repaint(action::draw);
+        canvas.repaint(action);
         action.processEvents(lastMouseEvent[0], lastKeyEvent[0]);
         lastMouseEvent[0] = null;
         lastKeyEvent[0] = null;

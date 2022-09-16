@@ -2,13 +2,15 @@ package Graphics;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.function.Consumer;
+
+import Logic.Game;
+import Scheduler.Action;
 
 /**
  * A canvas on which to draw stuff.
  */
 public class GameCanvas extends JPanel {
-    private Consumer<GameCanvas> paintFunction = null;
+    private Action currAction = null;
     public Graphics2D graphics = null;
     public int width, height;
     
@@ -16,29 +18,34 @@ public class GameCanvas extends JPanel {
      * Repaints the canvas, calling the function supplied
      * @param function The function to call to paint the canvas
      */
-    public void repaint(Consumer<GameCanvas> function) {
-        paintFunction = function;
+    public void repaint(Action a) {
+        currAction = a;
+        if(currAction.isFinished()) return;
         super.repaint();
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        if(paintFunction != null) {
-            graphics = (Graphics2D) g;
-
-            graphics.setRenderingHint(
-                    RenderingHints.KEY_TEXT_ANTIALIASING,
-                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON
-            );
-            graphics.setRenderingHint(
-                    RenderingHints.KEY_INTERPOLATION,
-                    RenderingHints.VALUE_INTERPOLATION_BILINEAR
-            );
-            width = getWidth();
-            height = getHeight();
-            paintFunction.accept(this);
-            graphics = null;
+        graphics = (Graphics2D) g;
+        if(currAction != null) {
+            paint(currAction, graphics);
         }
+        graphics = null;
+    }
+    
+    protected void paint(Action a, Graphics2D g){
+        g.setRenderingHint(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            RenderingHints.VALUE_TEXT_ANTIALIAS_ON
+        );
+        g.setRenderingHint(
+            RenderingHints.KEY_INTERPOLATION,
+            RenderingHints.VALUE_INTERPOLATION_BILINEAR
+        );
+        g.setColor(Game.FG_COLOR);
+        width = getWidth();
+        height = getHeight();
+        currAction.draw(this);
     }
 }

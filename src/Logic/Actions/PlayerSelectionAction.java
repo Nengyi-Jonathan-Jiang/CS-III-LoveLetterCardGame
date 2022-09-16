@@ -112,14 +112,14 @@ public class PlayerSelectionAction extends Action {
                 finished = interrupted = true;
             }
             else if(nextButton.clicked(me)){
-                if(players.size() >= 3) {
+                if(players.size() >= 2) {
                     game.initializePlayers(players.stream().map(btn -> btn.getText()[0]).collect(Collectors.toList()));
                     finished = true;
                 }
             }
             else if(addPlayerButton.clicked(me)){
                 typing = false;
-                if(players.size() < 6) {
+                if(players.size() < 7) {
                     if(selectedPlayer >= 0){
                         players.get(selectedPlayer).deleteChar();
                     }
