@@ -5,6 +5,7 @@ import Graphics.Painter;
 import Graphics.Buttons.TextButton;
 import Graphics.Buttons.InputButton;
 import Logic.Game;
+import Logic.Style;
 import Scheduler.Action;
 
 import java.awt.Font;
@@ -67,7 +68,7 @@ public class PlayerSelectionAction extends Action {
                 if(selectedPlayer < 0) return;
                 InputButton btn = players.get(selectedPlayer);
 
-                if(("" + c).matches("^[a-zA-Z0-9_]$")){
+                if(("" + c).matches("^[a-zA-Z0-9 ]$") && btn.getText()[0].length() <= 15){
                     btn.deleteChar();
                     btn.append(c + "_");
                 }
@@ -119,13 +120,13 @@ public class PlayerSelectionAction extends Action {
             }
             else if(addPlayerButton.clicked(me)){
                 typing = false;
-                if(players.size() < 7) {
+                if(players.size() < 6) {
                     if(selectedPlayer >= 0){
                         players.get(selectedPlayer).deleteChar();
                     }
                     selectedPlayer = players.size();
-                    InputButton btn = new InputButton("Player" + (players.size() + 1) + "_");
-                    btn.setFontSize(20);
+                    InputButton btn = new InputButton(Style.FancyFont, "Player" + (players.size() + 1) + "_");
+                    btn.setFontSize(50);
                     players.add(btn);
                     typing = true;
                 }
@@ -135,12 +136,13 @@ public class PlayerSelectionAction extends Action {
 
     @Override
     public void draw(GameCanvas canvas) {
-        Painter p = new Painter(canvas.graphics);
-        p.setFont("Times New Roman", Font.PLAIN, 20);
-        p.drawText(canvas.width / 2, canvas.height - 20, Painter.ALIGN_CENTER_H | Painter.ALIGN_BOTTOM,
+        Painter p = canvas.painter;
+        p.setFont(Style.deriveFont(Style.DefaultFont, 24));
+        p.drawTextWithShadow(canvas.width / 2, canvas.height - 20, Painter.ALIGN_CENTER_H | Painter.ALIGN_BOTTOM,
             new String[]{
-                "Click \"Add Player\" to add a player. Player names may consist of uppercase and",
-                "lowercase letters, digits, and underscores (\"_\")."
+                "Click \"Add Player\" to add a player. You can edit player names by clicking on them.",
+                "Player names may consist of letters, digits, and spaces, and should be no more than",
+                "15 characters long."
             }
         );
 
@@ -156,9 +158,9 @@ public class PlayerSelectionAction extends Action {
         for(int i = 0; i < players.size(); i++){
             TextButton btn = players.get(i);
 
-            btn.setSize(canvas.width - 40, 30);
+            btn.setSize(canvas.width - 40, 50);
 
-            btn.setPos(20, 100 + 50 * i);
+            btn.setPos(20, 100 + 60 * i);
             btn.draw(canvas);
         }
     }

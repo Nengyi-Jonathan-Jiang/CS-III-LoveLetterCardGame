@@ -1,5 +1,7 @@
 package Graphics.Buttons;
 
+import java.awt.*;
+
 /**
  * A TextButton whose text can be edited using the {@link InputButton#append(char)}, {@link InputButton#append(String)},
  * and {@link InputButton#deleteChar()} methods. There can only be a single line of text
@@ -7,6 +9,10 @@ package Graphics.Buttons;
 public class InputButton extends TextButton {
     public InputButton(String str){
         super(str);
+    }
+
+    public InputButton(Font font, String str){
+        super(font, str);
     }
     
     /**

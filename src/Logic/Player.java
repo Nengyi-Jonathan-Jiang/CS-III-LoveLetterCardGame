@@ -140,13 +140,13 @@ public class Player {
         double cardOffset = .25;
         int m = (int)((canvas.height / ((getNumSlots(game) + 1) / 2) - 60) / (1 + (Math.ceil(1. * game.numCards / getNumSlots(game)) - 1) * cardOffset) * 5 / 7 + 40);
 
-        int width = (canvas.width - 2 * m);
+        int width = canvas.width - 2 * m;
         int cardWidth = Math.min(300, width / 3 - 20);
 
         for(int i = 0; i < btns.size(); i++){
             btns.get(i).draw(canvas, canvas.width / 2 - cardWidth / 2 +
                             (int)((width / 3) * (i - (btns.size() - 1) * .5)),
-                    120,
+                    180,
                     cardWidth
             );
         }
@@ -156,9 +156,7 @@ public class Player {
         Font font = game.getCurrentIndex() == index
                 ? new Font("Times New Roman", Font.BOLD, 20)
                 : new Font("Times New Roman", Font.PLAIN, 20);
-        String name = game.getCurrentIndex() == index
-                ? this.name + "(You)"
-                : this.name;
+        String name = this.name;
 
         int playersPerCol = ((getNumSlots(game) + 1) / 2);
         double cardOffset = .25;
@@ -173,9 +171,9 @@ public class Player {
 
         canvas.graphics.drawRect(offsetX, offsetY, w, h);
 
-        new Painter(canvas.graphics)
+        canvas.painter
                 .setFont(font)
-                .drawText(offsetX + w / 2, offsetY, Painter.ALIGN_CENTER_H, name);
+                .drawTextWithShadow(offsetX + w / 2, offsetY, Painter.ALIGN_CENTER_H, name);
 
         for(int i = 0; i < discarded.size(); i++){
             discarded.get(i).getButton().draw(canvas, offsetX + 20, offsetY + 40 + (int)(cardHeight * cardOffset * i), cardWidth);
@@ -187,7 +185,7 @@ public class Player {
             canvas.graphics.drawLine(offsetX + 20, offsetY + 20, offsetX + cardWidth + 20, offsetY);
             canvas.graphics.setColor(new Color(255, 0, 0, 50));
             canvas.graphics.fillRect(offsetX, offsetY, w, h);
-            canvas.graphics.setColor(Game.FG_COLOR);
+            canvas.graphics.setColor(Style.FG_COLOR);
         }
     }
     
@@ -205,11 +203,14 @@ public class Player {
         return Integer.compare(discardValueB, discardValueA);
     }
     
-    public static int getSideSize(GameCanvas c, Game g){
-        
+    public static int getSideWidth(GameCanvas c, Game g){
         int playersPerCol = ((getNumSlots(g) + 1) / 2);
-    
-        return c.height / playersPerCol;
+        double cardOffset = .25;
+
+        int h = c.height / playersPerCol;
+        int cardHeight = (int)((h - 60) / (1 + (Math.ceil(1. * g.numCards / getNumSlots(g)) - 1) * cardOffset));
+        int cardWidth = cardHeight * 5 / 7;
+        return cardWidth + 40;
     }
     
     public static int getSideCardSize(GameCanvas c, Game g){
@@ -233,6 +234,6 @@ public class Player {
     }
     
     private static int getNumSlots(Game g){
-        return g.getNumPlayers() + 1;
+        return g.getNumPlayers();
     }
 }

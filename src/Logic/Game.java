@@ -1,15 +1,15 @@
 package Logic;
 
+import Logic.Actions.MenuAction;
+
 import java.awt.*;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Game {
-    public final static Color FG_COLOR = new Color(255, 215, 0);
-    public final static Color BG_COLOR = new Color(127, 107, 0);
-    
     private List<Player> players;
     private int numPlayers;
     private int currentPlayer;

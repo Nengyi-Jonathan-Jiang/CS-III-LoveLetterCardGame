@@ -4,7 +4,7 @@ import Logic.Card;
 import Graphics.GameCanvas;
 import Graphics.Painter;
 import Graphics.Buttons.TextButton;
-import Logic.Game;
+import Logic.Style;
 import Scheduler.Action;
 
 import java.awt.*;
@@ -33,14 +33,13 @@ public class CardSelectAction extends Action {
 
     @Override
     public void draw(GameCanvas canvas) {
-        new Painter(canvas.graphics)
-                .setFont("Times New Roman", Font.PLAIN, 40)
-                .drawText(canvas.width / 2, 20, Painter.ALIGN_CENTER_H, "Select a Card:");
+        canvas.painter.setFont(Style.deriveFont(Style.FancyFont, 80));
+        canvas.painter.drawTextWithShadow(canvas.width / 2, 40, Painter.ALIGN_CENTER_H, "Select a Card:");
 
         for(int i = 0; i < btns.size(); i++){
             Button btn = btns.get(i);
             btn.setSize(canvas.width - 40, 60);
-            btn.setPos(20, 90 + 80 * i);
+            btn.setPos(20, 150 + 80 * i);
             btn.draw(canvas);
         }
     }

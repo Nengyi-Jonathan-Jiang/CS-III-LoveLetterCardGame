@@ -25,11 +25,10 @@ public class App extends JFrame {
         GameCardTypes.getAll().forEach(Card::getButton);
         
         GameCanvas canvas = new GameCanvas(){
-            // private final BufferedImage bkgd = ImageLoader.load("background.jpg");
             private final BufferedImage bkgd = ImageLoader.load("background.png");
     
             @Override
-            public void paint(Action a, Graphics2D g) {
+            public void paintAction(Action a, Graphics2D g) {
                 double aspect = 1. * bkgd.getWidth() / bkgd.getHeight();
                 int w, h;
                 if(1. * width / height > aspect){
@@ -41,7 +40,7 @@ public class App extends JFrame {
                     h = height;
                 }
                 g.drawImage(bkgd, width / 2 - w / 2, height / 2 - h / 2, w, h, null);
-                super.paint(a, g);
+                super.paintAction(a, g);
             }
         };
         Game game = new Game();

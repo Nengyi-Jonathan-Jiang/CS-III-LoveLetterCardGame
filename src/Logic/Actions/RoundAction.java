@@ -5,6 +5,7 @@ import Graphics.Painter;
 import Logic.Game;
 import Logic.GameCardTypes;
 import Logic.Player;
+import Logic.Style;
 import Scheduler.Action;
 import Util.Util;
 
@@ -83,8 +84,8 @@ public class RoundAction extends Action {
     
     @Override
     public void draw(GameCanvas canvas) {
-        new Painter(canvas.graphics).setFont("Times New Roman", Font.BOLD, 40).drawText(canvas.width / 2, 20, Painter.ALIGN_CENTER_H,
-            //"Round over. Remaining players: " + game.getActivePlayers().stream().map(Player::getName).collect(Collectors.toList())
+        canvas.painter.setFont(Style.deriveFont(Style.FancyFont, 80));
+        canvas.painter.drawTextWithShadow(canvas.width / 2, 40, Painter.ALIGN_CENTER_H,
             "Round over. Player affection counts:"
         );
         
@@ -93,9 +94,9 @@ public class RoundAction extends Action {
             String name = p.getName();
             int affection = p.getAffection();
             
-            Painter paint = new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 20);
-            paint.drawText(40, 60 + i * 50, name);
-            paint.drawText(canvas.width - 40, 60 + i * 50, Painter.ALIGN_RIGHT, "" + affection);
+            Painter paint = canvas.painter.setFont(Style.deriveFont(Style.FancyFont, 40));
+            paint.drawText(40, 120 + i * 50, name);
+            paint.drawTextWithShadow(canvas.width - 40, 120 + i * 50, Painter.ALIGN_RIGHT, "" + affection);
         }
     }
     

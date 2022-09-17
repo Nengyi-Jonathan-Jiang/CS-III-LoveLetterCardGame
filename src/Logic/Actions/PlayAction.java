@@ -3,10 +3,7 @@ package Logic.Actions;
 import Graphics.GameCanvas;
 import Graphics.Painter;
 import Graphics.Buttons.CardButton;
-import Logic.Card;
-import Logic.Game;
-import Logic.GameCardTypes;
-import Logic.Player;
+import Logic.*;
 import Scheduler.Action;
 
 import java.awt.*;
@@ -17,17 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class PlayAction extends Action {
-    private static final CardButton REFERENCE_CARD = new Card(){
-        @Override
-        public String getName() {
-            return "ReferenceCard";
-        }
-        @Override
-        public int getValue() {
-            return -1;
-        }
-    }.getButton();
-    
     private final Game game;
 
     private boolean finished = false;
@@ -35,6 +21,8 @@ public class PlayAction extends Action {
     private Action postAction = null;
 
     private List<CardButton> btns;
+
+    private int selectedBtn = -1;
 
     public PlayAction(Game game){
         this.game = game;
@@ -62,21 +50,25 @@ public class PlayAction extends Action {
             player.displaySide(canvas);
         }
 
-        new Painter(canvas.graphics).setFont("Times New Roman", Font.PLAIN, 40).drawText(
-                canvas.width / 2, 40, Painter.ALIGN_CENTER_H, game.getCurrentPlayer() + "'s turn."
+        canvas.painter.setFont(Style.deriveFont(Style.FancyFont, 80));
+        canvas.painter.drawTextWithShadow(
+                canvas.width / 2, 40, Painter.ALIGN_CENTER_H, game.getCurrentPlayer() + "'s turn"
         );
 
-        game.getCurrentPlayer().displayHand(canvas, btns);
-    
-        new Painter(canvas.graphics)
-            .setFont("Times New Roman", Font.PLAIN, 30)
-            .drawText(canvas.width / 2, canvas.height - 60, Painter.ALIGN_CENTER_H | Painter.ALIGN_BOTTOM, "Pick a card to play (discard)");
-        
-        new Painter(canvas.graphics)
-            .setFont("Times New Roman", Font.PLAIN, 30)
-            .drawText(canvas.width / 2, canvas.height - 20, Painter.ALIGN_CENTER_H | Painter.ALIGN_BOTTOM, "Remaining cards in deck: " + (game.getDeckSize() - 1));
-        
-        REFERENCE_CARD.draw(canvas, canvas.width - Player.getSideSize(canvas, game) * 5 / 7, canvas.height - Player.getSideSize(canvas, game), Player.getSideSize(canvas, game));
+        if(selectedBtn != -1){
+            btns.get(selectedBtn).selected = true;
+            game.getCurrentPlayer().displayHand(canvas, btns);
+            btns.get(selectedBtn).selected = false;
+        }
+        else{
+            game.getCurrentPlayer().displayHand(canvas, btns);
+        }
+
+        canvas.painter.setFont(Style.deriveFont(Style.DefaultFont, 24));
+        canvas.painter.drawTextWithShadow(canvas.width / 2, canvas.height - 20, Painter.ALIGN_CENTER_H | Painter.ALIGN_BOTTOM,
+                "Pick a card to play (discard)",
+                "Remaining cards in deck: " + (game.getDeckSize() - 1)
+        );
     }
 
     @Override
@@ -85,11 +77,19 @@ public class PlayAction extends Action {
             for (int i = 0; i < btns.size(); i++) {
                 if (btns.get(i).clicked(me)) {
                     if(game.getCurrentPlayer().getHandCard(i) != GameCardTypes.Princess) {
-                        postAction = game.getCurrentPlayer().discardCard(i).getAction(game);
-                        finished = true;
+                        if(selectedBtn == i) {
+                            postAction = game.getCurrentPlayer().discardCard(i).getAction(game);
+                            finished = true;
+                        }
+                        else{
+                            selectedBtn = i;
+                        }
                     }
                 }
             }
+        }
+        if(ke != null){
+            selectedBtn = -1;
         }
     }
 

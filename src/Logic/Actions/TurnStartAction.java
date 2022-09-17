@@ -3,6 +3,7 @@ package Logic.Actions;
 import Graphics.GameCanvas;
 import Graphics.Painter;
 import Logic.Game;
+import Logic.Style;
 import Scheduler.Action;
 
 import java.awt.*;
@@ -19,9 +20,12 @@ public class TurnStartAction extends Action {
 
     @Override
     public void draw(GameCanvas canvas) {
-        new Painter(canvas.graphics)
-                .setFont("Times New Roman", Font.PLAIN, 40)
-                .drawText(canvas.width / 2, 40, Painter.ALIGN_CENTER_H, game.getCurrentPlayer() + "'s turn");
+        canvas.painter
+                .setFont(Style.deriveFont(Style.FancyFont, 80))
+                .drawTextWithShadow(canvas.width / 2, 40, Painter.ALIGN_CENTER_H, game.getCurrentPlayer() + "'s turn");
+
+        canvas.painter
+                .drawTextWithShadow(canvas.width / 2, canvas.height / 2, Painter.ALIGN_CENTER_H | Painter.ALIGN_CENTER_V, "Click to continue");
     }
 
     @Override

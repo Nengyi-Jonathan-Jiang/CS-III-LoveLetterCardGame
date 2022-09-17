@@ -3,9 +3,9 @@ package Logic.Actions;
 import Graphics.GameCanvas;
 import Graphics.Painter;
 import Logic.Game;
+import Logic.Style;
 import Scheduler.Action;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
@@ -26,9 +26,10 @@ public class MenuAction extends Action {
 
     @Override
     public void draw(GameCanvas canvas) {
-        Painter p = new Painter(canvas.graphics);
-        p.setFont("Times New Roman", Font.BOLD, 50);
-        p.drawText(canvas.width / 2, canvas.height / 2, Painter.ALIGN_CENTER_H | Painter.ALIGN_CENTER_V, "Click to start a new game");
+        canvas.painter.setFont(Style.deriveFont(Style.TitleFont, 200));
+        canvas.painter.drawTextWithShadow(canvas.width / 2, canvas.height * 3 / 9, Painter.ALIGN_CENTER_H | Painter.ALIGN_CENTER_V, "Love Letters");
+        canvas.painter.setFont(Style.deriveFont(Style.FancyFont,100));
+        canvas.painter.drawTextWithShadow(canvas.width / 2, canvas.height * 5 / 9, Painter.ALIGN_CENTER_H | Painter.ALIGN_CENTER_V, "Click to start a new game");
     }
 
     @Override

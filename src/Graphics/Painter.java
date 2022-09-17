@@ -52,12 +52,12 @@ public class Painter {
     }
 
     public Painter setFontStyle(int style) {
-        setFont(new Font(getFontName(), style, getFont().getSize()));
+        setFont(getFont().deriveFont(style));
         return this;
     }
 
     public Painter setFontSize(int size) {
-        setFont(new Font(getFontName(), getFontStyle(), size));
+        setFont(getFont().deriveFont((float)size));
         return this;
     }
 
@@ -85,11 +85,11 @@ public class Painter {
         graphics.drawString(text, x, y);
     }
 
-    public void drawText(int x, int y, String ...text) {
-        drawText(x, y, 0, text);
+    public Painter drawText(int x, int y, String ...text) {
+        return drawText(x, y, 0, text);
     }
 
-    public void drawText(int x, int y, int flags, String ...text){
+    public Painter drawText(int x, int y, int flags, String ...text){
         int size = getFont().getSize();
         for(int i = 0; i < text.length; i++) {
             if((flags & ALIGN_BOTTOM) != 0) {
@@ -102,5 +102,18 @@ public class Painter {
                 _drawText(x, y + i * 6 / 5 * size, flags, text[i]);
             }
         }
+
+        return this;
+    }
+
+    public Painter drawTextWithShadow(int x, int y, int flags, String ...text){
+        Color before = graphics.getColor();
+        setColor(new Color(0, 0, 0, 31));
+        drawText(x + 2, y + 2, flags, text);
+        drawText(x + 3, y + 2, flags, text);
+        drawText(x + 2, y + 3, flags, text);
+        setColor(before);
+        drawText(x, y, flags, text);
+        return this;
     }
 }

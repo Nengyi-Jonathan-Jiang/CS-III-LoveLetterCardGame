@@ -4,6 +4,7 @@ import Graphics.GameCanvas;
 import Graphics.Painter;
 import Logic.Game;
 import Logic.Player;
+import Logic.Style;
 import Scheduler.Action;
 
 import java.awt.*;
@@ -36,8 +37,10 @@ public class GameAction extends Action {
 
     @Override
     public void draw(GameCanvas canvas) {
-        new Painter(canvas.graphics).setFont("Times New Roman", Font.BOLD, 40).drawText(canvas.width / 2, 20, Painter.ALIGN_CENTER_H,
-            "Game over. " + game.getAllPlayers().stream().filter(p -> p.getAffection() >= 5).map(Player::getName).collect(Collectors.joining(" and ")) + " won the game."
+        canvas.painter.setFont(Style.deriveFont(Style.FancyFont, 100));
+        canvas.painter.drawTextWithShadow(canvas.width / 2, canvas.height / 2, Painter.ALIGN_CENTER_H | Painter.ALIGN_CENTER_V,
+            "Game over.",
+            game.getAllPlayers().stream().filter(p -> p.getAffection() >= 5).map(Player::getName).collect(Collectors.joining(" and ")) + " won the game."
         );
     }
 
