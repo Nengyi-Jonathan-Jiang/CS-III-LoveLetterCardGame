@@ -166,7 +166,12 @@ public class Player {
         int cardWidth = cardHeight * 5 / 7;
         int w = cardWidth + 40;
         int offsetX = index < playersPerCol ? 0 : canvas.width - w;
-        int offsetY = h * (index % playersPerCol);
+
+        int p;
+        if(index < playersPerCol) p = index;
+        else p = playersPerCol * 2 - index - (getNumSlots(game) % 2 + 1);
+
+        int offsetY = h * p;
 
 
         canvas.graphics.drawRect(offsetX, offsetY, w, h);
