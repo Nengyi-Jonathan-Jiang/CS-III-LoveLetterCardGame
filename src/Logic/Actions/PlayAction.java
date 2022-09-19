@@ -1,5 +1,6 @@
 package Logic.Actions;
 
+import Graphics.Buttons.TextButton;
 import Graphics.GameCanvas;
 import Graphics.Painter;
 import Graphics.Buttons.CardButton;
@@ -14,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class PlayAction extends Action {
+    
     private final Game game;
 
     private boolean finished = false;
@@ -21,6 +23,7 @@ public class PlayAction extends Action {
     private Action postAction = null;
 
     private List<CardButton> btns;
+    private TextButton confirmBtn;
 
     private int selectedBtn = -1;
 
@@ -39,10 +42,17 @@ public class PlayAction extends Action {
             finished = true;
         }
         btns = p.getButtons();
+        confirmBtn = new TextButton("Confirm play");
+        confirmBtn.setFontSize(30);
+        confirmBtn.setSize(400, 60);
     }
 
     @Override
     public void draw(GameCanvas canvas) {
+        Game.REFERENCE_CARD.draw(canvas, Player.getSideWidth(canvas, game), canvas.height - Player.getHandCardSize(canvas, game) * 7 / 5 * 2 / 3, Player.getHandCardSize(canvas, game) * 2 / 3);
+        if(!game.isDeckEmpty()) {
+            Game.CARD_BACK.draw(canvas, canvas.width - Player.getSideWidth(canvas, game) - Player.getHandCardSize(canvas, game) * 2 / 3, canvas.height - Player.getHandCardSize(canvas, game) * 7 / 5 * 2 / 3, Player.getHandCardSize(canvas, game) * 2 / 3);
+        }
         
         List<Player> players = game.getAllPlayers();
 
@@ -54,17 +64,21 @@ public class PlayAction extends Action {
         canvas.painter.drawTextWithShadow(
                 canvas.width / 2, 40, Painter.ALIGN_CENTER_H, game.getCurrentPlayer() + "'s turn"
         );
-
+    
         if(selectedBtn != -1){
             btns.get(selectedBtn).selected = true;
             game.getCurrentPlayer().displayHand(canvas, btns);
             btns.get(selectedBtn).selected = false;
+            
+            confirmBtn.setPos(canvas.getWidth() / 2 - 200, canvas.height - 160);
+            confirmBtn.draw(canvas);
         }
         else{
             game.getCurrentPlayer().displayHand(canvas, btns);
         }
-
-        canvas.painter.setFont(Style.deriveFont(Style.DefaultFont, 24));
+    
+        canvas.painter.setFont(Style.deriveFont(Style.DefaultFont, 30));
+    
         canvas.painter.drawTextWithShadow(canvas.width / 2, canvas.height - 20, Painter.ALIGN_CENTER_H | Painter.ALIGN_BOTTOM,
                 "Pick a card to play (discard)",
                 "Remaining cards in deck: " + (game.getDeckSize() - 1)
@@ -78,14 +92,19 @@ public class PlayAction extends Action {
                 if (btns.get(i).clicked(me)) {
                     if(game.getCurrentPlayer().getHandCard(i) != GameCardTypes.Princess) {
                         if(selectedBtn == i) {
-                            postAction = game.getCurrentPlayer().discardCard(i).getAction(game);
-                            finished = true;
+//                            postAction = game.getCurrentPlayer().discardCard(i).getAction(game);
+//                            finished = true;
+                            selectedBtn = -1;
                         }
                         else{
                             selectedBtn = i;
                         }
                     }
                 }
+            }
+            if(confirmBtn.clicked(me) && selectedBtn != -1){
+               postAction = game.getCurrentPlayer().discardCard(selectedBtn).getAction(game);
+                finished = true;
             }
         }
         if(ke != null){

@@ -1,17 +1,14 @@
 package Logic;
 
 import Graphics.Buttons.CardButton;
-import Graphics.Buttons.Button;
 import Graphics.Buttons.TextButton;
 import Graphics.GameCanvas;
 import Graphics.Painter;
 
 import Logic.Actions.CardSelectAction;
-import Logic.Actions.DrawAction;
 import Logic.Actions.TargetSelectAction;
 
 import Scheduler.Action;
-import org.w3c.dom.Text;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -298,7 +295,8 @@ public class GameCardTypes {
     };
 
     public static final Card Chancellor = new Card() {
-
+        private int s1 = -1, s2 = -1;
+        
         @Override
         public String getName() {
             return "Chancellor";
@@ -325,9 +323,56 @@ public class GameCardTypes {
 
                 @Override
                 public Iterator<? extends Action> getPreActions() {
-                    return List.of(new DrawAction(
-                            game, 2
-                    )).iterator();
+                    return List.of(new Action(){
+                        private int clicks = 0;
+                        
+                        @Override
+                        public void processEvents(MouseEvent me, KeyEvent ke) {
+                            if(me != null) {
+                                if (Game.CARD_BACK.clicked(me)) {
+                                    clicks++;
+                                    game.drawCards(game.getCurrentPlayer(), 1);
+                                }
+                            }
+                        }
+        
+                        @Override
+                        public void draw(GameCanvas canvas) {
+                            Game.REFERENCE_CARD.draw(canvas, Player.getSideWidth(canvas, game), canvas.height - Player.getHandCardSize(canvas, game) * 7 / 5 * 2 / 3, Player.getHandCardSize(canvas, game) * 2 / 3);
+                            Game.CARD_BACK.draw(canvas, canvas.width - Player.getSideWidth(canvas, game) - Player.getHandCardSize(canvas, game) * 2 / 3, canvas.height - Player.getHandCardSize(canvas, game) * 7 / 5 * 2 / 3, Player.getHandCardSize(canvas, game) * 2 / 3);
+            
+                            List<Player> players = game.getAllPlayers();
+            
+                            for (Player player : players) {
+                                player.displaySide(canvas);
+                            }
+            
+                            canvas.painter.setFont(Style.deriveFont(Style.FancyFont, 80));
+                            canvas.painter.drawTextWithShadow(
+                                canvas.width / 2, 40, Painter.ALIGN_CENTER_H, "Draw " + (clicks == 0 ? "two more cards" : "one more card")
+                            );
+            
+                            List<CardButton> btnns = game.getCurrentPlayer().getButtons();
+                            if(s1 != -1){
+                                btnns.get(s1).selectNum = 1;
+                            }
+                            if(s2 != -1){
+                                btnns.get(s1).selectNum = 2;
+                            }
+                            game.getCurrentPlayer().displayHand(canvas, btnns);
+                            
+                            canvas.painter.setFont(Style.deriveFont(Style.DefaultFont, 30));
+                            canvas.painter.drawTextWithShadow(canvas.width / 2, canvas.height - 20, Painter.ALIGN_CENTER_H | Painter.ALIGN_BOTTOM,
+                                "Click the deck to draw a card",
+                                "Remaining cards in deck: " + (game.getDeckSize() - 1)
+                            );
+                        }
+        
+                        @Override
+                        public boolean isFinished() {
+                            return clicks >= 2;
+                        }
+                    }).iterator();
                 }
     
                 @Override

@@ -1,5 +1,6 @@
 package Logic;
 
+import Graphics.Buttons.CardButton;
 import Logic.Actions.MenuAction;
 
 import java.awt.*;
@@ -10,6 +11,31 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Game {
+    
+    public static final CardButton REFERENCE_CARD = new Card() {
+        @Override
+        public String getName() {
+            return "ReferenceCard";
+        }
+        
+        @Override
+        public int getValue() {
+            return -1;
+        }
+    }.getButton();
+    
+    public static final CardButton CARD_BACK = new Card() {
+        @Override
+        public String getName() {
+            return "CardBack";
+        }
+        
+        @Override
+        public int getValue() {
+            return -1;
+        }
+    }.getButton();
+    
     private List<Player> players;
     private int numPlayers;
     private int currentPlayer;

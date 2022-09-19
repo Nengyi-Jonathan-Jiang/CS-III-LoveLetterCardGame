@@ -3,6 +3,7 @@ package Graphics.Buttons;
 import Logic.Card;
 import Graphics.GameCanvas;
 import Logic.Style;
+import Graphics.Painter;
 
 import java.awt.*;
 
@@ -11,6 +12,7 @@ import java.awt.*;
  */
 public class CardButton extends ImageButton {
     public boolean selected = false;
+    public int selectNum = -1;
 
     public CardButton(Card card){
         super(card.getName());
@@ -31,6 +33,14 @@ public class CardButton extends ImageButton {
             canvas.graphics.setColor(Style.FG_COLOR);
             canvas.graphics.drawRect(x - 15, y - 15, scale + 30, scale * 7 / 5 + 30);
         }
+        
+        if(selectNum != -1) {
+            Font f = canvas.painter.getFont();
+            canvas.painter.setFont(Style.deriveFont(Style.FancyFont, 30));
+            canvas.painter.drawText(x + scale / 2, y + scale * 7 / 5 + 30, "" + selectNum);
+            canvas.painter.setFont(f);
+        }
+        
         super.draw(canvas);
     }
 }
